@@ -6,39 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Search Ranking & Discoverability Capstone</title>
 
-    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
+        * {
             margin: 0;
-            padding: 40px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
             color: #333;
+            line-height: 1.7;
         }
 
         .container {
+            width: 90%;
             max-width: 1000px;
-            margin: auto;
-            background: white;
+            margin: 40px auto;
+            background: #fff;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
         h1 {
             text-align: center;
             color: #1565C0;
+            margin-bottom: 10px;
         }
 
         h2 {
             color: #1565C0;
+            margin-top: 35px;
+            margin-bottom: 10px;
             border-bottom: 2px solid #1565C0;
             padding-bottom: 5px;
-            margin-top: 35px;
         }
 
-        p, li {
-            line-height: 1.7;
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
         }
 
         table {
@@ -47,44 +59,41 @@
             margin-top: 15px;
         }
 
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th {
+        table th {
             background: #1565C0;
             color: white;
-        }
-
-        th, td {
             padding: 12px;
-            text-align: left;
         }
 
-        a {
-            color: #1565C0;
-            font-weight: bold;
-            text-decoration: none;
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
         }
 
-        a:hover {
-            text-decoration: underline;
+        table tr:nth-child(even) {
+            background: #f7f7f7;
         }
 
-        .btn {
+        .button {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 15px;
             background: #1565C0;
             color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
             text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #0d47a1;
         }
 
         footer {
             margin-top: 40px;
             text-align: center;
             color: gray;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -95,20 +104,26 @@
 
 <h1>Google Search Ranking & Discoverability Capstone</h1>
 
-<p align="center">
+<p style="text-align:center;">
 <strong>FlyRank Machine Learning Internship</strong>
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+This capstone project investigates how historical search performance and content quality signals can be used to identify webpages that should be prioritized for optimization. A machine learning workflow was developed to rank content opportunities and support SEO decision-making using structured search performance data.
 </p>
 
 <h2>Research Question</h2>
 
 <p>
-Can historical search performance, content freshness, engagement metrics, and search visibility be combined to identify content pages that should be prioritized for optimization?
+Can historical search performance metrics be used to identify webpages that are most likely to benefit from content refresh and optimization?
 </p>
 
 <h2>Decision Supported</h2>
 
 <p>
-This project develops a decision-support system that ranks webpages according to observed optimization opportunity. The model helps prioritize limited SEO resources using historical search intelligence signals rather than predicting guaranteed future rankings.
+The project provides a decision-support system that helps prioritize webpages for content refresh based on historical SEO signals instead of relying solely on manual review.
 </p>
 
 <h2>Selected Lane</h2>
@@ -120,28 +135,25 @@ Refresh / Content Opportunity Scoring
 <h2>Dataset</h2>
 
 <ul>
-<li>Dataset: <strong>content_refresh_anonymized.csv</strong></li>
-<li>30,000 rows</li>
-<li>44 columns</li>
-<li>Unit of analysis: One content page</li>
-<li>Historical search performance snapshot</li>
+<li>Dataset: Content Refresh Opportunity Dataset</li>
+<li>30,000 Records</li>
+<li>44 Features</li>
+<li>Historical Search Performance Data</li>
+<li>Anonymized SEO Metrics</li>
 </ul>
-
-<p>
-Sensitive information such as client identities, URLs, domains, private queries, and future outcomes was excluded from the analysis.
-</p>
 
 <h2>Methodology</h2>
 
 <ul>
 <li>Data Cleaning</li>
+<li>Exploratory Data Analysis</li>
 <li>Feature Engineering</li>
-<li>Baseline Opportunity Score</li>
+<li>Baseline Model</li>
 <li>Linear Regression</li>
 <li>Random Forest Regressor</li>
-<li>Dummy Regressor</li>
-<li>80/20 Train-Test Split</li>
-<li>Leakage Prevention</li>
+<li>Dummy Regressor Comparison</li>
+<li>Model Evaluation</li>
+<li>Content Opportunity Ranking</li>
 </ul>
 
 <h2>Selected Features</h2>
@@ -149,32 +161,30 @@ Sensitive information such as client identities, URLs, domains, private queries,
 <ul>
 <li>Search Volume</li>
 <li>Competition</li>
-<li>CPC</li>
+<li>Cost Per Click (CPC)</li>
 <li>Word Count</li>
 <li>Character Count</li>
-<li>Impressions (90 Days)</li>
-<li>Clicks (90 Days)</li>
-<li>Sessions (90 Days)</li>
+<li>Impressions</li>
+<li>Clicks</li>
 <li>CTR</li>
 <li>Average Position</li>
+<li>Sessions</li>
 <li>Engagement Rate</li>
 <li>Scroll Rate</li>
 <li>Days Since Last Update</li>
 <li>AI Traffic Percentage</li>
 </ul>
 
+<h2>Model Evaluation</h2>
+
+<p>
+Multiple regression models were evaluated and compared against a Dummy Regressor baseline using standard regression evaluation metrics. The analysis demonstrated that the selected machine learning models did not outperform the baseline on the held-out test set, highlighting the limitations of the available historical search signals for this prediction task.
+</p>
+
 <h2>Results</h2>
 
 <p>
-Three regression models were evaluated using Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R² Score.
-</p>
-
-<p>
-The evaluation showed that none of the tested machine learning models outperformed the Dummy Regressor on the held-out test data. This indicates that the available historical search signals provide limited predictive power for the selected target variable.
-</p>
-
-<p>
-Although predictive performance was limited, the framework successfully provides a structured decision-support system for ranking content optimization opportunities.
+Although predictive performance was limited, the developed workflow successfully provides a reproducible framework for ranking webpages according to their estimated optimization opportunity. The resulting recommendations can assist SEO teams in prioritizing content updates.
 </p>
 
 <h2>Ranked Recommendations</h2>
@@ -182,13 +192,13 @@ Although predictive performance was limited, the framework successfully provides
 <table>
 
 <tr>
-<th>Rank</th>
-<th>Recommended Action</th>
+<th>Priority</th>
+<th>Recommendation</th>
 </tr>
 
 <tr>
 <td>1</td>
-<td>Refresh Content</td>
+<td>Refresh Existing Content</td>
 </tr>
 
 <tr>
@@ -203,12 +213,12 @@ Although predictive performance was limited, the framework successfully provides
 
 <tr>
 <td>4</td>
-<td>Monitor Performance</td>
+<td>Optimize Internal Linking</td>
 </tr>
 
 <tr>
 <td>5</td>
-<td>Validate with SEO Specialist</td>
+<td>Monitor Future Performance</td>
 </tr>
 
 </table>
@@ -216,35 +226,35 @@ Although predictive performance was limited, the framework successfully provides
 <h2>Limitations</h2>
 
 <ul>
-<li>Decision-support system only</li>
-<li>Does not prove causality</li>
-<li>Historical snapshot dataset</li>
-<li>External ranking factors not included</li>
-<li>Google algorithm updates not modeled</li>
-<li>Seasonality not fully represented</li>
+<li>Historical snapshot data only.</li>
+<li>External ranking factors were not included.</li>
+<li>Results are decision-support recommendations rather than causal conclusions.</li>
+<li>Future Google algorithm updates are not modeled.</li>
 </ul>
 
 <h2>Reproducibility</h2>
 
 <p>
-The notebook contains all preprocessing, feature engineering, model training, evaluation, and recommendation generation steps required to reproduce the analysis.
+All preprocessing, feature engineering, model training, evaluation, and analysis are documented in the accompanying Jupyter Notebook.
 </p>
 
-<a class="btn" href="work/notebooks/capstone.ipynb">
+<p>
+<a class="button"
+href="https://colab.research.google.com/github/Eshaal356/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb"
+target="_blank">
 View Complete Capstone Notebook
 </a>
+</p>
 
 <h2>Acknowledgments</h2>
 
 <p>
-This project was completed as part of the FlyRank Machine Learning Internship using the provided anonymized search intelligence dataset and project guidelines.
+This project was completed as part of the FlyRank Machine Learning Internship using the anonymized internship dataset and project guidelines.
 </p>
 
 <footer>
-
 Google Search Ranking & Discoverability Capstone<br>
 FlyRank Machine Learning Internship
-
 </footer>
 
 </div>
