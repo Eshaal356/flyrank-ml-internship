@@ -27,7 +27,7 @@
             background: #fff;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,.1);
         }
 
         h1 {
@@ -135,7 +135,7 @@ Refresh / Content Opportunity Scoring
 <h2>Dataset</h2>
 
 <ul>
-<li>Dataset: Content Refresh Opportunity Dataset</li>
+<li><strong>Dataset:</strong> content_refresh_anonymized.csv</li>
 <li>30,000 Records</li>
 <li>44 Features</li>
 <li>Historical Search Performance Data</li>
@@ -174,68 +174,146 @@ Refresh / Content Opportunity Scoring
 <li>Days Since Last Update</li>
 <li>AI Traffic Percentage</li>
 </ul>
-
 <h2>Model Evaluation</h2>
 
 <p>
-Multiple regression models were evaluated and compared against a Dummy Regressor baseline using standard regression evaluation metrics. The analysis demonstrated that the selected machine learning models did not outperform the baseline on the held-out test set, highlighting the limitations of the available historical search signals for this prediction task.
+Three regression models were evaluated using Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R² Score.
 </p>
-
-<h2>Results</h2>
-
-<p>
-Although predictive performance was limited, the developed workflow successfully provides a reproducible framework for ranking webpages according to their estimated optimization opportunity. The resulting recommendations can assist SEO teams in prioritizing content updates.
-</p>
-
-<h2>Ranked Recommendations</h2>
 
 <table>
 
 <tr>
-<th>Priority</th>
-<th>Recommendation</th>
+<th>Model</th>
+<th>MAE</th>
+<th>RMSE</th>
+<th>R²</th>
 </tr>
 
 <tr>
-<td>1</td>
-<td>Refresh Existing Content</td>
+<td>Dummy Regressor</td>
+<td>64.1583</td>
+<td>315.9668</td>
+<td>-0.0001</td>
 </tr>
 
 <tr>
-<td>2</td>
-<td>Improve Content Quality</td>
+<td>Linear Regression</td>
+<td>65.8695</td>
+<td>317.0327</td>
+<td>-0.0068</td>
 </tr>
 
 <tr>
-<td>3</td>
-<td>Review SEO Metadata</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>Optimize Internal Linking</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>Monitor Future Performance</td>
+<td>Random Forest Regressor</td>
+<td>71.7958</td>
+<td>351.5542</td>
+<td>-0.2380</td>
 </tr>
 
 </table>
 
+<p><strong>Best Model:</strong> Dummy Regressor</p>
+
+<h2>Results</h2>
+
+<p>
+The Dummy Regressor achieved the best overall performance with the lowest Mean Absolute Error (64.1583), the lowest Root Mean Squared Error (315.9668), and the highest R² score (-0.0001). Neither Linear Regression nor Random Forest Regressor outperformed the baseline model, indicating that the available historical search signals contained limited predictive information for this prediction task.
+</p>
+
+<p>
+Although predictive accuracy was limited, the developed workflow successfully produced ranked content opportunity scores that can support SEO teams in prioritizing pages for review and optimization.
+</p>
+
+<h2>Interpretation</h2>
+
+<p>
+The evaluation suggests that the available search performance features were insufficient to accurately predict future content opportunity scores. The Dummy Regressor performed better than the trained machine learning models, indicating that additional features, richer datasets, or alternative modeling approaches may be required to improve predictive performance.
+</p>
+
+<h2>Artifacts Generated</h2>
+
+<ul>
+<li>Dataset Summary</li>
+<li>Missing Value Analysis</li>
+<li>Feature Engineering Pipeline</li>
+<li>Model Performance Comparison Table</li>
+<li>Actual vs Predicted Scatter Plot</li>
+<li>Top 20 Ranked Content Recommendations</li>
+<li>Baseline vs Machine Learning Comparison</li>
+</ul>
+
+<h2>Top 20 Ranked Content Recommendations</h2>
+
+<table>
+
+<tr>
+<th>Rank</th>
+<th>Action</th>
+<th>Reason</th>
+</tr>
+
+<tr><td>1</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>2</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>3</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>4</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>5</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>6</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>7</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>8</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>9</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>10</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>11</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>12</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>13</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>14</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>15</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>16</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>17</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>18</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
+<tr><td>19</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
+<tr><td>20</td><td>Refresh Immediately</td><td>Declining Trend</td></tr>
+
+</table>
+
+<h2>Visualizations</h2>
+
+<p>
+The notebook includes an <strong>Actual vs Predicted Values</strong> scatter plot comparing predicted and observed values. This visualization shows that the trained regression models did not significantly outperform the Dummy Regressor baseline, highlighting the limited predictive capability of the available features.
+</p>
 <h2>Limitations</h2>
 
 <ul>
-<li>Historical snapshot data only.</li>
-<li>External ranking factors were not included.</li>
-<li>Results are decision-support recommendations rather than causal conclusions.</li>
-<li>Future Google algorithm updates are not modeled.</li>
+    <li>Historical snapshot data only.</li>
+    <li>External ranking factors were not included.</li>
+    <li>Results are intended as decision-support recommendations rather than causal conclusions.</li>
+    <li>Future Google algorithm updates are not modeled.</li>
+    <li>The evaluated machine learning models did not outperform the Dummy Regressor baseline on the held-out test set.</li>
 </ul>
 
 <h2>Reproducibility</h2>
 
 <p>
-All preprocessing, feature engineering, model training, evaluation, and analysis are documented in the accompanying Jupyter Notebook.
+All preprocessing, exploratory data analysis, feature engineering, model training, evaluation, and recommendation generation are fully documented in the accompanying Jupyter Notebook. The notebook enables the complete workflow to be reproduced from the anonymized internship dataset.
+</p>
+
+<p>
+The project includes:
+</p>
+
+<ul>
+    <li>Data Cleaning</li>
+    <li>Exploratory Data Analysis (EDA)</li>
+    <li>Feature Engineering</li>
+    <li>Regression Model Training</li>
+    <li>Baseline Comparison</li>
+    <li>Performance Evaluation</li>
+    <li>Content Opportunity Ranking</li>
+</ul>
+
+<h2>View Complete Capstone Notebook</h2>
+
+<p>
+The complete implementation, including preprocessing, feature engineering, model training, evaluation, visualizations, and ranked content recommendations, is available in the Google Colab notebook.
 </p>
 
 <p>
@@ -249,12 +327,25 @@ View Complete Capstone Notebook
 <h2>Acknowledgments</h2>
 
 <p>
-This project was completed as part of the FlyRank Machine Learning Internship using the anonymized internship dataset and project guidelines.
+This project was completed as part of the <strong>FlyRank Machine Learning Internship</strong>. It uses the anonymized internship dataset and follows the project guidelines for the <strong>Google Search Ranking & Discoverability Capstone</strong>. The work demonstrates a reproducible machine learning workflow for identifying and ranking webpage content refresh opportunities using historical SEO performance signals.
 </p>
 
 <footer>
-Google Search Ranking & Discoverability Capstone<br>
+<hr style="margin:25px 0;">
+
+<p>
+<strong>Google Search Ranking &amp; Discoverability Capstone</strong><br>
 FlyRank Machine Learning Internship
+</p>
+
+<p>
+Created by <strong>Eshaal Malik</strong>
+</p>
+
+<p>
+&copy; 2026 All Rights Reserved
+</p>
+
 </footer>
 
 </div>
