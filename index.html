@@ -4,98 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Search Ranking & Discoverability Capstone</title>
+    <title>Google Search Ranking & Discoverability Capstone | FlyRank ML Internship</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.7;
+        body{
+            font-family:Arial, Helvetica, sans-serif;
+            background:#f4f7fb;
+            color:#333;
+            line-height:1.8;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.1);
+        .container{
+            width:90%;
+            max-width:1100px;
+            margin:40px auto;
+            background:#fff;
+            padding:45px;
+            border-radius:12px;
+            box-shadow:0 8px 25px rgba(0,0,0,.08);
         }
 
-        h1 {
-            text-align: center;
-            color: #1565C0;
-            margin-bottom: 10px;
+        h1{
+            text-align:center;
+            color:#1565C0;
+            margin-bottom:10px;
         }
 
-        h2 {
-            color: #1565C0;
-            margin-top: 35px;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #1565C0;
-            padding-bottom: 5px;
+        h2{
+            color:#1565C0;
+            border-bottom:2px solid #1565C0;
+            padding-bottom:6px;
+            margin-top:40px;
+            margin-bottom:15px;
         }
 
-        p {
-            margin-bottom: 15px;
+        p{
+            margin-bottom:18px;
+            text-align:justify;
         }
 
-        ul {
-            margin-left: 25px;
-            margin-bottom: 20px;
+        ul{
+            margin-left:28px;
+            margin-bottom:20px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:18px;
         }
 
-        table th {
-            background: #1565C0;
-            color: white;
-            padding: 12px;
+        table th{
+            background:#1565C0;
+            color:white;
+            padding:12px;
         }
 
-        table td {
-            padding: 12px;
-            border: 1px solid #ddd;
+        table td{
+            border:1px solid #ddd;
+            padding:12px;
         }
 
-        table tr:nth-child(even) {
-            background: #f7f7f7;
+        table tr:nth-child(even){
+            background:#f8f8f8;
         }
 
-        .button {
-            display: inline-block;
-            margin-top: 15px;
-            background: #1565C0;
-            color: white;
-            text-decoration: none;
-            padding: 12px 22px;
-            border-radius: 6px;
-            font-weight: bold;
+        .button{
+            display:inline-block;
+            margin-top:15px;
+            background:#1565C0;
+            color:white;
+            text-decoration:none;
+            padding:12px 22px;
+            border-radius:6px;
+            font-weight:bold;
         }
 
-        .button:hover {
-            background: #0d47a1;
+        .button:hover{
+            background:#0d47a1;
         }
 
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            color: gray;
-            font-size: 14px;
+        footer{
+            text-align:center;
+            margin-top:45px;
+            color:#666;
+            font-size:14px;
         }
+
     </style>
+
 </head>
 
 <body>
@@ -111,86 +115,161 @@
 <h2>Abstract</h2>
 
 <p>
-This capstone project investigates how historical search performance and content quality signals can be used to identify webpages that should be prioritized for optimization. A machine learning workflow was developed to rank content opportunities and support SEO decision-making using structured search performance data.
+
+This capstone project presents a comprehensive machine learning framework for identifying high-value content refresh opportunities using historical search performance indicators and page-level SEO metrics. The primary objective is to develop an evidence-driven decision-support system capable of prioritizing webpages according to their estimated optimization potential while maintaining methodological transparency and reproducibility.
+
+A complete analytical pipeline was implemented, including exploratory data analysis, feature engineering, baseline benchmarking, supervised regression modeling, comparative performance evaluation, and opportunity ranking generation. Multiple regression algorithms were systematically evaluated against a Dummy Regressor baseline using established regression metrics to assess predictive capability.
+
+Although the trained machine learning models did not outperform the baseline predictor on unseen data, the study provides valuable empirical insights into the challenges of forecasting optimization opportunities solely from historical SEO signals. The resulting workflow demonstrates a reproducible analytical methodology that can support structured content prioritization while highlighting important limitations and future research opportunities within search intelligence and machine learning applications.
+
 </p>
 
 <h2>Research Question</h2>
 
 <p>
-Can historical search performance metrics be used to identify webpages that are most likely to benefit from content refresh and optimization?
+
+To what extent can historical search performance metrics, engagement indicators, and content quality characteristics be utilized to accurately identify webpages that should be prioritized for content refresh and search engine optimization initiatives?
+
 </p>
 
 <h2>Decision Supported</h2>
 
 <p>
-The project provides a decision-support system that helps prioritize webpages for content refresh based on historical SEO signals instead of relying solely on manual review.
+
+This research develops a data-driven decision-support framework designed to assist SEO analysts and digital content strategists in identifying webpages with the greatest estimated optimization opportunity. Rather than relying exclusively on manual review or subjective judgment, the proposed methodology leverages historical performance indicators to generate reproducible opportunity rankings that can guide resource allocation and content improvement strategies.
+
 </p>
 
 <h2>Selected Lane</h2>
 
 <p>
-Refresh / Content Opportunity Scoring
+
+<strong>Refresh / Content Opportunity Scoring</strong>
+
 </p>
 
 <h2>Dataset</h2>
 
+<p>
+
+The experimental analysis was conducted using the anonymized internship dataset provided for the FlyRank Machine Learning Capstone. The dataset contains historical search performance indicators and page-level SEO metrics designed to support supervised learning for content opportunity assessment while preserving privacy through anonymization.
+
+</p>
+
 <ul>
+
 <li><strong>Dataset:</strong> content_refresh_anonymized.csv</li>
-<li>30,000 Records</li>
-<li>44 Features</li>
-<li>Historical Search Performance Data</li>
-<li>Anonymized SEO Metrics</li>
+
+<li>30,000 anonymized webpage observations</li>
+
+<li>44 engineered predictive variables</li>
+
+<li>Historical search performance indicators</li>
+
+<li>Organic visibility and ranking metrics</li>
+
+<li>User engagement measurements</li>
+
+<li>Content quality characteristics</li>
+
+<li>Privacy-preserving anonymized feature representation</li>
+
 </ul>
 
 <h2>Methodology</h2>
 
+<p>
+
+A structured machine learning workflow was implemented to ensure analytical consistency, reproducibility, and objective model comparison. The methodology follows a conventional supervised learning pipeline beginning with data preparation and concluding with ranked content opportunity recommendations.
+
+</p>
+
 <ul>
-<li>Data Cleaning</li>
-<li>Exploratory Data Analysis</li>
-<li>Feature Engineering</li>
-<li>Baseline Model</li>
-<li>Linear Regression</li>
-<li>Random Forest Regressor</li>
-<li>Dummy Regressor Comparison</li>
-<li>Model Evaluation</li>
-<li>Content Opportunity Ranking</li>
+
+<li>Data Quality Assessment and Cleaning</li>
+
+<li>Exploratory Data Analysis (EDA)</li>
+
+<li>Missing Value Investigation</li>
+
+<li>Feature Engineering and Variable Selection</li>
+
+<li>Baseline Model Construction</li>
+
+<li>Linear Regression Development</li>
+
+<li>Random Forest Regression Development</li>
+
+<li>Comparative Benchmark Evaluation</li>
+
+<li>Regression Performance Assessment</li>
+
+<li>Content Opportunity Scoring</li>
+
+<li>Priority Ranking Generation</li>
+
 </ul>
 
 <h2>Selected Features</h2>
 
+<p>
+
+The predictive models were developed using a diverse collection of SEO, engagement, behavioral, and content-related variables intended to capture multiple dimensions of webpage performance. These features collectively represent search visibility, audience interaction, content freshness, competitive intensity, and traffic characteristics that may influence optimization opportunities.
+
+</p>
+
 <ul>
+
 <li>Search Volume</li>
+
 <li>Competition</li>
+
 <li>Cost Per Click (CPC)</li>
+
 <li>Word Count</li>
+
 <li>Character Count</li>
+
 <li>Impressions</li>
+
 <li>Clicks</li>
-<li>CTR</li>
+
+<li>Click-Through Rate (CTR)</li>
+
 <li>Average Position</li>
+
 <li>Sessions</li>
+
 <li>Engagement Rate</li>
+
 <li>Scroll Rate</li>
+
 <li>Days Since Last Update</li>
+
 <li>AI Traffic Percentage</li>
+
 </ul>
 <h2>Model Evaluation</h2>
 
 <p>
-Three regression models were evaluated using Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R² Score.
+
+To assess the predictive capability of the proposed framework, three regression models were systematically evaluated using standard regression performance metrics: Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and the coefficient of determination (R² Score). A Dummy Regressor was employed as the benchmark baseline to determine whether the machine learning models were capable of learning meaningful relationships beyond a naïve prediction strategy.
+
+The evaluation protocol emphasized objective model comparison rather than maximizing predictive accuracy, thereby ensuring an unbiased assessment of the information contained within the available historical SEO features.
+
 </p>
 
 <table>
 
 <tr>
 <th>Model</th>
-<th>MAE</th>
-<th>RMSE</th>
-<th>R²</th>
+<th>Mean Absolute Error (MAE)</th>
+<th>Root Mean Squared Error (RMSE)</th>
+<th>R² Score</th>
 </tr>
 
 <tr>
-<td>Dummy Regressor</td>
+<td>Dummy Regressor (Baseline)</td>
 <td>64.1583</td>
 <td>315.9668</td>
 <td>-0.0001</td>
@@ -212,44 +291,102 @@ Three regression models were evaluated using Mean Absolute Error (MAE), Root Mea
 
 </table>
 
-<p><strong>Best Model:</strong> Dummy Regressor</p>
+<p style="background:#e8f5e9;padding:15px;border-left:6px solid green;">
+
+<strong>Best Performing Model:</strong> Dummy Regressor
+
+</p>
+
+<p>
+
+The comparative evaluation demonstrated that neither Linear Regression nor Random Forest Regression achieved measurable improvements over the baseline predictor. Consequently, the Dummy Regressor remained the strongest-performing model under the selected evaluation criteria.
+
+</p>
+
+
 
 <h2>Results</h2>
 
 <p>
-The Dummy Regressor achieved the best overall performance with the lowest Mean Absolute Error (64.1583), the lowest Root Mean Squared Error (315.9668), and the highest R² score (-0.0001). Neither Linear Regression nor Random Forest Regressor outperformed the baseline model, indicating that the available historical search signals contained limited predictive information for this prediction task.
+
+The experimental findings indicate that historical search performance variables alone provided limited predictive information for estimating future content opportunity scores. Although multiple supervised learning algorithms were investigated, none produced statistically meaningful improvements over the baseline benchmark.
+
+Rather than representing a limitation of the analytical workflow itself, these findings emphasize the inherent complexity of search engine optimization, where ranking potential is influenced by numerous external factors that were unavailable within the anonymized dataset.
+
 </p>
 
 <p>
-Although predictive accuracy was limited, the developed workflow successfully produced ranked content opportunity scores that can support SEO teams in prioritizing pages for review and optimization.
+
+Despite the modest predictive performance, the developed framework successfully generated reproducible content opportunity rankings that provide a structured basis for prioritizing webpages requiring manual review, optimization, and strategic content enhancement.
+
 </p>
 
-<h2>Interpretation</h2>
+
+
+<h2>Interpretation of Findings</h2>
 
 <p>
-The evaluation suggests that the available search performance features were insufficient to accurately predict future content opportunity scores. The Dummy Regressor performed better than the trained machine learning models, indicating that additional features, richer datasets, or alternative modeling approaches may be required to improve predictive performance.
+
+The outcome of this study demonstrates that historical SEO metrics alone may not sufficiently explain future optimization opportunities. Modern search engine performance depends upon a diverse combination of semantic relevance, content quality, user intent, backlink authority, algorithmic updates, technical SEO, and competitive dynamics, many of which were intentionally excluded from the anonymized internship dataset.
+
+The superior performance of the Dummy Regressor therefore suggests that additional contextual variables, richer feature engineering strategies, temporal information, or more sophisticated learning architectures may be necessary before reliable prediction becomes feasible.
+
+Importantly, these results remain scientifically valuable because negative findings contribute to a more realistic understanding of machine learning limitations within practical SEO applications.
+
 </p>
+
+
 
 <h2>Artifacts Generated</h2>
 
+<p>
+
+Throughout the project, several analytical artifacts were produced to improve transparency, reproducibility, and interpretability of the complete machine learning workflow. These outputs collectively document every stage of the experimentation process.
+
+</p>
+
 <ul>
-<li>Dataset Summary</li>
-<li>Missing Value Analysis</li>
+
+<li>Comprehensive Dataset Summary</li>
+
+<li>Missing Value Analysis Report</li>
+
+<li>Exploratory Data Analysis Outputs</li>
+
 <li>Feature Engineering Pipeline</li>
-<li>Model Performance Comparison Table</li>
-<li>Actual vs Predicted Scatter Plot</li>
-<li>Top 20 Ranked Content Recommendations</li>
-<li>Baseline vs Machine Learning Comparison</li>
+
+<li>Regression Model Performance Comparison</li>
+
+<li>Baseline versus Machine Learning Benchmark Analysis</li>
+
+<li>Actual versus Predicted Scatter Plot</li>
+
+<li>Top 20 Ranked Content Opportunity Recommendations</li>
+
+<li>Model Evaluation Metrics</li>
+
+<li>Final Recommendation Framework</li>
+
 </ul>
 
-<h2>Top 20 Ranked Content Recommendations</h2>
+
+
+<h2>Top 20 Ranked Content Opportunity Recommendations</h2>
+
+<p>
+
+Following model evaluation, webpages were ranked according to their estimated optimization opportunity score. Each recommendation includes the primary action together with the corresponding decision rationale generated from the analytical workflow.
+
+These rankings should be interpreted as decision-support recommendations designed to assist SEO professionals in prioritizing content review activities rather than deterministic predictions of future Google rankings.
+
+</p>
 
 <table>
 
 <tr>
 <th>Rank</th>
-<th>Action</th>
-<th>Reason</th>
+<th>Recommended Action</th>
+<th>Primary Reason</th>
 </tr>
 
 <tr><td>1</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
@@ -275,75 +412,153 @@ The evaluation suggests that the available search performance features were insu
 
 </table>
 
+
+
 <h2>Visualizations</h2>
 
 <p>
-The notebook includes an <strong>Actual vs Predicted Values</strong> scatter plot comparing predicted and observed values. This visualization shows that the trained regression models did not significantly outperform the Dummy Regressor baseline, highlighting the limited predictive capability of the available features.
+
+To complement the quantitative evaluation, diagnostic visualizations were generated to examine prediction quality and overall model behavior. The accompanying notebook includes an <strong>Actual versus Predicted Values</strong> scatter plot that compares observed outcomes with model predictions.
+
+The visualization further reinforces the numerical evaluation by illustrating that the trained regression models exhibited limited predictive improvement relative to the baseline Dummy Regressor, thereby supporting the conclusions drawn from the statistical performance metrics.
+
 </p>
+<h2>Future Work</h2>
+
+<p>
+
+While the present study establishes a reproducible framework for content opportunity scoring, several directions remain available for future investigation. Incorporating longitudinal search performance data, semantic content embeddings, backlink authority metrics, topical relevance signals, and temporal trend analysis may substantially improve predictive capability.
+
+Future experimentation may also explore advanced ensemble learning algorithms such as Gradient Boosting, XGBoost, LightGBM, CatBoost, and neural network architectures. Furthermore, integrating Large Language Models (LLMs) for semantic content quality assessment could provide additional contextual information beyond traditional numerical SEO metrics, potentially improving both prediction accuracy and practical decision support.
+
+</p>
+
+
+
 <h2>Limitations</h2>
 
+<p>
+
+Although the proposed methodology provides a transparent analytical framework for ranking content opportunities, several limitations should be acknowledged to ensure accurate interpretation of the findings.
+
+</p>
+
 <ul>
-    <li>Historical snapshot data only.</li>
-    <li>External ranking factors were not included.</li>
-    <li>Results are intended as decision-support recommendations rather than causal conclusions.</li>
-    <li>Future Google algorithm updates are not modeled.</li>
-    <li>The evaluated machine learning models did not outperform the Dummy Regressor baseline on the held-out test set.</li>
+
+<li>The dataset represents a historical snapshot rather than a continuously evolving search environment.</li>
+
+<li>Important external ranking factors, including backlink quality, domain authority, competitor activity, user search intent, and Google algorithm updates, were not available within the anonymized dataset.</li>
+
+<li>The anonymized feature representation restricts domain-specific interpretation while preserving data privacy.</li>
+
+<li>The evaluated regression models demonstrated limited predictive capability under the available feature space.</li>
+
+<li>The generated rankings should be interpreted as decision-support recommendations rather than causal estimates of future search ranking improvements.</li>
+
+<li>Additional contextual features and richer behavioral data may substantially improve future predictive performance.</li>
+
 </ul>
+
+
 
 <h2>Reproducibility</h2>
 
 <p>
-All preprocessing, exploratory data analysis, feature engineering, model training, evaluation, and recommendation generation are fully documented in the accompanying Jupyter Notebook. The notebook enables the complete workflow to be reproduced from the anonymized internship dataset.
+
+Reproducibility represents a fundamental principle of this project. Every stage of the analytical workflow, including data preprocessing, exploratory data analysis, feature engineering, model development, baseline comparison, performance evaluation, visualization generation, and recommendation ranking, has been fully documented within the accompanying Jupyter Notebook.
+
+This documentation enables independent verification of the complete workflow and facilitates future extension, experimentation, and comparative evaluation by researchers, mentors, and practitioners.
+
+</p>
+
+
+
+<h2>Project Resources</h2>
+
+<p>
+
+The complete implementation, including source code, experimental workflow, and supporting documentation, is publicly accessible through the resources below.
+
 </p>
 
 <p>
-The project includes:
-</p>
 
-<ul>
-    <li>Data Cleaning</li>
-    <li>Exploratory Data Analysis (EDA)</li>
-    <li>Feature Engineering</li>
-    <li>Regression Model Training</li>
-    <li>Baseline Comparison</li>
-    <li>Performance Evaluation</li>
-    <li>Content Opportunity Ranking</li>
-</ul>
-
-<h2>View Complete Capstone Notebook</h2>
-
-<p>
-The complete implementation, including preprocessing, feature engineering, model training, evaluation, visualizations, and ranked content recommendations, is available in the Google Colab notebook.
-</p>
-
-<p>
 <a class="button"
 href="https://colab.research.google.com/github/Eshaal356/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb"
 target="_blank">
-View Complete Capstone Notebook
+
+View Complete Capstone Notebook (Google Colab)
+
 </a>
+
 </p>
+
+<p>
+
+<a class="button"
+href="https://github.com/Eshaal356/flyrank-ml-internship"
+target="_blank">
+
+View GitHub Repository
+
+</a>
+
+</p>
+
+
 
 <h2>Acknowledgments</h2>
 
 <p>
-This project was completed as part of the <strong>FlyRank Machine Learning Internship</strong>. It uses the anonymized internship dataset and follows the project guidelines for the <strong>Google Search Ranking & Discoverability Capstone</strong>. The work demonstrates a reproducible machine learning workflow for identifying and ranking webpage content refresh opportunities using historical SEO performance signals.
+
+This capstone research was completed as part of the <strong>FlyRank Machine Learning Internship</strong>. The project was developed using the anonymized internship dataset and conducted in accordance with the official capstone project guidelines.
+
+The internship provided valuable exposure to practical machine learning experimentation, regression modeling, comparative benchmark evaluation, and evidence-based decision support for search engine optimization. The project reflects the application of reproducible data science methodologies to a real-world SEO analytics problem while emphasizing methodological transparency, objective evaluation, and responsible interpretation of experimental findings.
+
+The author gratefully acknowledges FlyRank for providing the learning opportunity, project framework, anonymized dataset, and practical environment through which this research was conducted.
+
 </p>
+
+
 
 <footer>
-<hr style="margin:25px 0;">
+
+<hr style="margin:30px 0;">
+
+<h3 style="color:#1565C0;">Google Search Ranking & Discoverability Capstone</h3>
 
 <p>
-<strong>Google Search Ranking &amp; Discoverability Capstone</strong><br>
-FlyRank Machine Learning Internship
+<strong>FlyRank Machine Learning Internship</strong>
 </p>
 
 <p>
-Created by <strong>Eshaal Malik</strong>
+
+Developed by <strong>Eshaal Malik</strong>
+
 </p>
 
 <p>
-&copy; 2026 All Rights Reserved
+
+Website:
+<a href="https://eshaal356.github.io/flyrank-ml-internship/" target="_blank">
+https://eshaal356.github.io/flyrank-ml-internship/
+</a>
+
+</p>
+
+<p>
+
+GitHub Repository:
+<a href="https://github.com/Eshaal356/flyrank-ml-internship" target="_blank">
+https://github.com/Eshaal356/flyrank-ml-internship
+</a>
+
+</p>
+
+<p>
+
+© 2026 • Machine Learning Capstone Project • FlyRank Internship
+
 </p>
 
 </footer>
@@ -351,4 +566,5 @@ Created by <strong>Eshaal Malik</strong>
 </div>
 
 </body>
+
 </html>
