@@ -1,1 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Google Search Ranking & Discoverability Capstone | FlyRank ML Internship
+</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f7fb;
+    color:#333;
+    line-height:1.8;
+}
+
+.container{
+
+    width:90%;
+    max-width:1100px;
+    margin:40px auto;
+    background:#ffffff;
+    padding:45px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+
+h1{
+
+    text-align:center;
+    color:#1565C0;
+    margin-bottom:10px;
+
+}
+
+
+h2{
+
+    color:#1565C0;
+    border-bottom:2px solid #1565C0;
+    padding-bottom:6px;
+    margin-top:40px;
+    margin-bottom:15px;
+
+}
+
+
+p{
+
+    margin-bottom:18px;
+    text-align:justify;
+
+}
+
+
+ul{
+
+    margin-left:28px;
+    margin-bottom:20px;
+
+}
+
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:18px;
+
+}
+
+
+table th{
+
+    background:#1565C0;
+    color:white;
+    padding:12px;
+
+}
+
+
+table td{
+
+    border:1px solid #ddd;
+    padding:12px;
+
+}
+
+
+table tr:nth-child(even){
+
+    background:#f8f8f8;
+
+}
+
+
+.button{
+
+    display:inline-block;
+    margin-top:15px;
+    background:#1565C0;
+    color:white;
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:6px;
+    font-weight:bold;
+
+}
+
+
+.button:hover{
+
+    background:#0d47a1;
+
+}
+
+
+footer{
+
+    text-align:center;
+    margin-top:45px;
+    color:#666;
+    font-size:14px;
+
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+Google Search Ranking & Discoverability Capstone
+</h1>
+
+
+<p style="text-align:center;">
+<strong>
+FlyRank Machine Learning Internship
+</strong>
+</p>
+
+
+
+<h2>
+Abstract
+</h2>
+
+
+<p>
+
+This capstone project presents a machine learning framework for identifying content pages that may represent optimization opportunities using historical search intelligence signals.
+
+The objective is to develop a transparent decision-support system that helps prioritize content review activities by analyzing historical search performance, engagement indicators, content freshness, and visibility-related metrics.
+
+A complete machine learning workflow was implemented including data preparation, feature selection, baseline comparison, supervised regression modeling, evaluation on unseen data, and ranked recommendation generation.
+
+Multiple regression approaches were evaluated against baseline methods using MAE, RMSE, and R² metrics. The results showed that the available historical features provided limited predictive power for the selected target variable.
+
+Instead of claiming guaranteed future ranking improvements, this project provides a reproducible framework for prioritizing content optimization opportunities while clearly documenting limitations and areas for future improvement.
+
+</p>
+
+
+
+<h2>
+Research Question
+</h2>
+
+
+<p>
+
+Can historical search performance, content freshness, engagement metrics, and search visibility be combined to identify content pages that should be prioritized for optimization?
+
+</p>
+
+
+
+<h2>
+Decision Supported
+</h2>
+
+
+<p>
+
+The purpose of this project is to support content optimization decisions by ranking pages according to observed optimization opportunity.
+
+The system does not predict guaranteed future performance. Instead, it provides a structured approach for prioritizing limited optimization resources using historical search intelligence signals.
+
+</p>
+
+
+
+<h2>
+Selected Lane
+</h2>
+
+
+<p>
+
+<strong>
+Refresh / Content Opportunity Scoring
+</strong>
+
+</p>
+
+
+
+<h2>
+Expected Output
+</h2>
+
+
+<p>
+
+The final output is a ranked list of content pages containing:
+
+</p>
+
+
+<ul>
+
+<li>Optimization opportunity score</li>
+
+<li>Recommended action</li>
+
+<li>Reason code explaining prioritization</li>
+
+</ul>
+
+
+
+
+<h2>
+Dataset
+</h2>
+
+
+<p>
+
+The analysis was performed using the anonymized FlyRank Machine Learning Internship dataset.
+
+The dataset contains historical search intelligence information designed for content opportunity analysis while protecting private client information.
+
+</p>
+
+
+
+<ul>
+
+<li>
+<strong>Dataset:</strong> content_refresh_anonymized.csv
+</li>
+
+
+<li>
+Rows: 30,000
+</li>
+
+
+<li>
+Columns: 44
+</li>
+
+
+<li>
+Unit of analysis: One content page observation
+</li>
+
+
+<li>
+Dataset type: Historical snapshot
+</li>
+
+
+<li>
+Public-safe anonymized variables only
+</li>
+
+</ul>
+
+
+
+
+<h2>
+Excluded Information
+</h2>
+
+
+<p>
+
+The following information was intentionally excluded:
+
+</p>
+
+
+<ul>
+
+<li>Client identities</li>
+
+<li>Domains</li>
+
+<li>URLs</li>
+
+<li>Private search queries</li>
+
+<li>Future outcomes after optimization</li>
+
+</ul>
+
+
+<p>
+
+The dataset is suitable for decision-support analysis and ranking experiments rather than causal inference.
+
+</p>
+
+
+
+
+<h2>
+Methodology
+</h2>
+
+
+<p>
+
+The project follows a supervised machine learning workflow designed to evaluate whether historical search intelligence signals can support content prioritization decisions.
+
+The methodology focuses on measuring observed relationships between available features and the selected target variable while preventing data leakage.
+
+</p>
+
+
+
+<h3>
+Modeling Objective
+</h3>
+
+
+<p>
+
+The objective is to rank content pages according to their observed optimization opportunity.
+
+The model does not attempt to guarantee future traffic growth, ranking improvements, or SEO outcomes.
+
+Instead, it provides a prioritization framework for identifying pages that may deserve further manual review.
+
+</p>
+
+
+
+<h3>
+Feature Selection
+</h3>
+
+
+<p>
+
+Only variables available before an optimization decision were included as predictive features.
+
+Selected features include:
+
+</p>
+
+
+<ul>
+
+<li>search_volume</li>
+
+<li>competition</li>
+
+<li>cpc</li>
+
+<li>word_count</li>
+
+<li>char_count</li>
+
+<li>impressions_90d</li>
+
+<li>clicks_90d</li>
+
+<li>sessions_90d</li>
+
+<li>engaged_sessions_90d</li>
+
+<li>days_since_last_update</li>
+
+<li>ctr</li>
+
+<li>avg_position</li>
+
+<li>engagement_rate</li>
+
+<li>scroll_rate</li>
+
+<li>ai_traffic_pct</li>
+
+</ul>
+<h3>
+Target Variable
+</h3>
+
+
+<p>
+
+The supervised learning target is <strong>trend_pct</strong>, which is treated as a continuous proxy for observed content momentum.
+
+The model estimates relative optimization opportunity based on historical patterns. It does not represent guaranteed future performance after content updates.
+
+</p>
+
+
+
+<h3>
+Baseline Strategy
+</h3>
+
+
+<p>
+
+Before evaluating machine learning models, a simple business baseline was created using manually weighted historical signals.
+
+The baseline considered:
+
+</p>
+
+
+<ul>
+
+<li>Search demand</li>
+
+<li>Search visibility</li>
+
+<li>Content freshness</li>
+
+</ul>
+
+
+<p>
+
+Machine learning models were compared against this baseline using the same train-test split to ensure a fair evaluation.
+
+</p>
+
+
+
+
+<h3>
+Validation Strategy
+</h3>
+
+
+<p>
+
+The dataset was divided into training and testing subsets using an 80/20 split with a fixed random state.
+
+Model performance was measured on unseen testing observations.
+
+Additional grouped validation performed during the internship showed that grouped evaluation produced more realistic performance estimates compared with random splitting.
+
+</p>
+
+
+
+
+<h3>
+Leakage Prevention
+</h3>
+
+
+<p>
+
+To reduce the risk of data leakage, only information available before an optimization decision was used.
+
+Future outcomes, post-update information, and manually created labels were excluded from the predictive feature set.
+
+</p>
+
+
+
+
+
+<h2>
+Results and Model Evaluation
+</h2>
+
+
+<p>
+
+Four approaches were compared:
+
+</p>
+
+
+<ul>
+
+<li>Business Baseline</li>
+
+<li>Dummy Regressor</li>
+
+<li>Linear Regression</li>
+
+<li>Random Forest Regressor</li>
+
+</ul>
+
+
+<p>
+
+Performance was evaluated using:
+
+</p>
+
+
+<ul>
+
+<li>
+Mean Absolute Error (MAE)
+</li>
+
+<li>
+Root Mean Squared Error (RMSE)
+</li>
+
+<li>
+R² Score
+</li>
+
+</ul>
+
+
+
+<p>
+
+The evaluation measures predictive performance on unseen data. It should not be interpreted as evidence of causal improvement after content optimization.
+
+</p>
+
+
+
+
+<table>
+
+<tr>
+
+<th>
+Model
+</th>
+
+<th>
+MAE
+</th>
+
+<th>
+RMSE
+</th>
+
+<th>
+R² Score
+</th>
+
+</tr>
+
+
+<tr>
+
+<td>
+Dummy Regressor
+</td>
+
+<td>
+64.1583
+</td>
+
+<td>
+315.9668
+</td>
+
+<td>
+-0.0001
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+Linear Regression
+</td>
+
+<td>
+65.8695
+</td>
+
+<td>
+317.0327
+</td>
+
+<td>
+-0.0068
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+Random Forest Regressor
+</td>
+
+<td>
+71.7958
+</td>
+
+<td>
+351.5542
+</td>
+
+<td>
+-0.2380
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+Business Baseline
+</td>
+
+<td>
+(Generated in notebook)
+</td>
+
+<td>
+(Generated in notebook)
+</td>
+
+<td>
+(Generated in notebook)
+</td>
+
+</tr>
+
+
+</table>
+
+
+
+
+<p style="
+background:#e8f5e9;
+padding:15px;
+border-left:6px solid green;
+">
+
+<strong>
+Evaluation Finding:
+</strong>
+
+The tested machine learning models did not outperform the baseline approaches on the selected target variable.
+
+</p>
+
+
+
+
+<h2>
+Interpretation of Findings
+</h2>
+
+
+<p>
+
+The results indicate that historical search performance signals alone provide limited predictive information for estimating content momentum.
+
+Search engine performance depends on many additional factors including:
+
+</p>
+
+
+<ul>
+
+<li>Search intent alignment</li>
+
+<li>Content quality</li>
+
+<li>Technical SEO factors</li>
+
+<li>Competitor changes</li>
+
+<li>Algorithm updates</li>
+
+<li>External authority signals</li>
+
+</ul>
+
+
+
+<p>
+
+These factors were not fully available within the anonymized dataset.
+
+Therefore, the developed framework should be considered a decision-support system rather than a forecasting engine.
+
+</p>
+
+
+
+
+<h2>
+Actual vs Predicted Analysis
+</h2>
+
+
+<p>
+
+A diagnostic scatter plot was generated to compare actual target values against model predictions.
+
+The visualization showed predictions concentrated around average values, supporting the quantitative evaluation that the available features contained limited predictive signal for the selected target.
+
+</p>
+
+
+
+
+<h2>
+Ranked Recommendations
+</h2>
+
+
+<p>
+
+The final stage of the project generated ranked content opportunity recommendations.
+
+Each recommendation contains:
+
+</p>
+
+
+<ul>
+
+<li>Predicted opportunity score</li>
+
+<li>Recommended action</li>
+
+<li>Reason code</li>
+
+</ul>
+
+
+
+<p>
+
+The ranking system is intended to help prioritize manual content reviews. It should not be interpreted as a guaranteed prediction of future Google ranking improvements.
+
+</p>
+
+
+
+
+<h2>
+Recommendation Actions
+</h2>
+
+
+<table>
+
+<tr>
+
+<th>
+Priority
+</th>
+
+<th>
+Action
+</th>
+
+<th>
+Purpose
+</th>
+
+</tr>
+
+
+<tr>
+
+<td>
+High
+</td>
+
+<td>
+Refresh Immediately
+</td>
+
+<td>
+Pages showing stronger optimization opportunity signals
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+Medium
+</td>
+
+<td>
+Review
+</td>
+
+<td>
+Pages requiring additional SEO analysis
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+Low
+</td>
+
+<td>
+Monitor
+</td>
+
+<td>
+Pages with limited immediate evidence
+</td>
+
+</tr>
+
+
+</table>
+
+
+
+
+
+<h2>
+Limitations
+</h2>
+
+
+<p>
+
+This project provides a structured ranking framework, but several limitations must be considered.
+
+</p>
+
+
+<ul>
+
+<li>
+The dataset represents a historical snapshot rather than a complete timeline.
+</li>
+
+
+<li>
+External ranking factors such as backlinks, algorithm changes, and competitor activity were not fully available.
+</li>
+
+
+<li>
+The model measures observed relationships rather than causal effects.
+</li>
+
+
+<li>
+Missing values were handled using median imputation.
+</li>
+
+
+<li>
+The recommendations should support human decision-making rather than replace SEO expertise.
+</li>
+
+</ul>
+
+
+
+
+<h2>
+Future Work
+</h2>
+
+
+<p>
+
+Future improvements could include richer temporal datasets, semantic content embeddings, backlink signals, topical authority features, and advanced ranking models.
+
+Potential future approaches include:
+
+</p>
+
+
+<ul>
+
+<li>XGBoost</li>
+
+<li>LightGBM</li>
+
+<li>CatBoost</li>
+
+<li>Large Language Model based content analysis</li>
+
+<li>Time-series validation strategies</li>
+
+</ul>
+
+
+<p>
+
+These improvements may provide additional context and improve the ability to identify valuable content optimization opportunities.
+
+</p>
+<h2>
+Artifacts Generated
+</h2>
+
+
+<p>
+
+The project produced multiple artifacts to improve transparency, reproducibility, and interpretation of the machine learning workflow.
+
+These artifacts document the complete analytical process from dataset understanding to final recommendations.
+
+</p>
+
+
+<ul>
+
+<li>
+Dataset summary and data quality analysis
+</li>
+
+<li>
+Missing value investigation
+</li>
+
+<li>
+Feature selection documentation
+</li>
+
+<li>
+Model comparison table
+</li>
+
+<li>
+Baseline versus machine learning evaluation
+</li>
+
+<li>
+Actual versus predicted visualization
+</li>
+
+<li>
+Top ranked content opportunity recommendations
+</li>
+
+<li>
+Final recommendation export file
+</li>
+
+</ul>
+
+
+
+
+<h2>
+Top Ranked Content Opportunity Framework
+</h2>
+
+
+<p>
+
+The final recommendation system ranks content pages according to their estimated optimization opportunity score.
+
+Each ranked page includes:
+
+</p>
+
+
+<ul>
+
+<li>
+Optimization priority level
+</li>
+
+<li>
+Recommended action
+</li>
+
+<li>
+Reason code explaining prioritization
+</li>
+
+</ul>
+
+
+<p>
+
+These outputs are designed as a practical decision-support tool for SEO review workflows.
+
+The rankings should be validated by SEO specialists before implementation.
+
+</p>
+
+
+
+
+<table>
+
+<tr>
+
+<th>
+Priority Level
+</th>
+
+<th>
+Recommended Action
+</th>
+
+<th>
+Decision Purpose
+</th>
+
+</tr>
+
+
+<tr>
+
+<td>
+High Opportunity
+</td>
+
+<td>
+Refresh Immediately
+</td>
+
+<td>
+Prioritize pages requiring deeper optimization review
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+Medium Opportunity
+</td>
+
+<td>
+Review
+</td>
+
+<td>
+Perform additional analysis before action
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+Low Opportunity
+</td>
+
+<td>
+Monitor
+</td>
+
+<td>
+Track future performance changes
+</td>
+
+</tr>
+
+
+</table>
+
+
+
+
+
+
+<h2>
+Reproducibility
+</h2>
+
+
+<p>
+
+Reproducibility was a key objective throughout this project.
+
+The complete workflow including data loading, preprocessing, feature selection, model training, evaluation, visualization generation, and recommendation ranking has been documented inside the accompanying Jupyter Notebook.
+
+This allows independent verification of the methodology and supports future experimentation with improved datasets and modeling approaches.
+
+</p>
+
+
+
+
+<h2>
+Project Resources
+</h2>
+
+
+<p>
+
+The complete implementation, notebook, and supporting files are available through the following resources.
+
+</p>
+
+
+
+<p>
+
+<a class="button"
+
+href="https://colab.research.google.com/github/Eshaal356/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb"
+
+target="_blank">
+
+Open Capstone Notebook
+
+</a>
+
+</p>
+
+
+
+<p>
+
+<a class="button"
+
+href="https://github.com/Eshaal356/flyrank-ml-internship"
+
+target="_blank">
+
+View GitHub Repository
+
+</a>
+
+</p>
+
+
+
+
+
+<h2>
+Acknowledgments & Data Credit
+</h2>
+
+
+<p>
+
+This research project was completed as part of the <strong>FlyRank Machine Learning Internship</strong>.
+
+The analysis was developed using the anonymized FlyRank ML Internship dataset and followed the official capstone project structure.
+
+The project provided practical experience in:
+
+</p>
+
+
+<ul>
+
+<li>
+Machine learning experimentation
+</li>
+
+<li>
+Regression model evaluation
+</li>
+
+<li>
+Search intelligence analysis
+</li>
+
+<li>
+Decision-support system development
+</li>
+
+<li>
+Responsible interpretation of model results
+</li>
+
+</ul>
+
+
+
+<p>
+
+The author acknowledges FlyRank for providing the internship framework, dataset environment, and opportunity to apply machine learning methods to a real-world search optimization problem.
+
+</p>
+
+
+
+
+<footer>
+
+
+<hr style="margin:30px 0;">
+
+
+
+<h3 style="color:#1565C0;">
+
+Google Search Ranking & Discoverability Capstone
+
+</h3>
+
+
+
+<p>
+
+<strong>
+FlyRank Machine Learning Internship
+</strong>
+
+</p>
+
+
+
+<p>
+
+Developed by:
+
+<strong>
+Eshaal Malik
+</strong>
+
+</p>
+
+
+
+<p>
+
+Website:
+
+<a href="https://eshaal356.github.io/flyrank-ml-internship/" target="_blank">
+
+https://eshaal356.github.io/flyrank-ml-internship/
+
+</a>
+
+</p>
+
+
+
+<p>
+
+GitHub Repository:
+
+<a href="https://github.com/Eshaal356/flyrank-ml-internship" target="_blank">
+
+https://github.com/Eshaal356/flyrank-ml-internship
+
+</a>
+
+</p>
+
+
+
+<p>
+
+© 2026 • Machine Learning Capstone Project • FlyRank Internship
+
+</p>
+
+
+</footer>
+
+
+
+</div>
+
+
+</body>
+
+
+</html>
