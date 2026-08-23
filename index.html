@@ -1,570 +1,2861 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Search Ranking & Discoverability Capstone | FlyRank ML Internship</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
+<title>FlyRank | Search Intelligence & Content Opportunity Scoring</title>
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+<meta name="description"
+      content="Research-grade capstone study investigating predictive signal, leakage control, grouped validation, and transparent content opportunity scoring.">
 
-        body{
-            font-family:Arial, Helvetica, sans-serif;
-            background:#f4f7fb;
-            color:#333;
-            line-height:1.8;
-        }
+<meta name="author" content="Eshaal Malik">
 
-        .container{
-            width:90%;
-            max-width:1100px;
-            margin:40px auto;
-            background:#fff;
-            padding:45px;
-            border-radius:12px;
-            box-shadow:0 8px 25px rgba(0,0,0,.08);
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        h1{
-            text-align:center;
-            color:#1565C0;
-            margin-bottom:10px;
-        }
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 
-        h2{
-            color:#1565C0;
-            border-bottom:2px solid #1565C0;
-            padding-bottom:6px;
-            margin-top:40px;
-            margin-bottom:15px;
-        }
+<style>
 
-        p{
-            margin-bottom:18px;
-            text-align:justify;
-        }
+:root {
+    --ink: #111318;
+    --muted: #68707d;
+    --paper: #f7f7f4;
+    --white: #ffffff;
+    --line: #dedfdc;
+    --soft: #eef0ed;
+    --accent: #173f35;
+    --accent-2: #315d50;
+    --gold: #a77b35;
+    --danger: #8c3d35;
+    --shadow: 0 20px 70px rgba(17,19,24,.08);
+    --radius: 20px;
+    --max: 1240px;
+}
 
-        ul{
-            margin-left:28px;
-            margin-bottom:20px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:18px;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        table th{
-            background:#1565C0;
-            color:white;
-            padding:12px;
-        }
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "DM Sans", sans-serif;
+    line-height: 1.75;
+}
 
-        table td{
-            border:1px solid #ddd;
-            padding:12px;
-        }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-        table tr:nth-child(even){
-            background:#f8f8f8;
-        }
+img {
+    max-width: 100%;
+}
 
-        .button{
-            display:inline-block;
-            margin-top:15px;
-            background:#1565C0;
-            color:white;
-            text-decoration:none;
-            padding:12px 22px;
-            border-radius:6px;
-            font-weight:bold;
-        }
+::selection {
+    background: #173f35;
+    color: white;
+}
 
-        .button:hover{
-            background:#0d47a1;
-        }
+/* -------------------------------------------------------
+   NAVIGATION
+------------------------------------------------------- */
 
-        footer{
-            text-align:center;
-            margin-top:45px;
-            color:#666;
-            font-size:14px;
-        }
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(247,247,244,.90);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(17,19,24,.08);
+}
 
-    </style>
+.nav-inner {
+    max-width: var(--max);
+    margin: auto;
+    min-height: 74px;
+    padding: 0 28px;
 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--accent);
+    color: white;
+
+    font-family: Georgia, serif;
+    font-size: 18px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.nav-links a {
+    transition: .2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--ink);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 10px 15px;
+    border-radius: 10px;
+
+    border: 1px solid var(--line);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-dark {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.btn-light {
+    background: white;
+}
+
+/* -------------------------------------------------------
+   GLOBAL
+------------------------------------------------------- */
+
+.container {
+    max-width: var(--max);
+    margin: auto;
+    padding: 0 28px;
+}
+
+.section {
+    padding: 105px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: .18em;
+}
+
+.eyebrow::before {
+    content: "";
+    width: 25px;
+    height: 1px;
+    background: var(--accent);
+}
+
+h1,
+h2,
+h3,
+.display {
+    font-family: "Libre Baskerville", Georgia, serif;
+}
+
+h2 {
+    margin: 18px 0 22px;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.18;
+    letter-spacing: -.035em;
+}
+
+h3 {
+    line-height: 1.3;
+}
+
+.lead {
+    max-width: 790px;
+    color: #535b66;
+    font-size: 18px;
+    line-height: 1.9;
+}
+
+.rule {
+    width: 70px;
+    height: 2px;
+    background: var(--gold);
+    margin: 28px 0;
+}
+
+/* -------------------------------------------------------
+   HERO
+------------------------------------------------------- */
+
+.hero {
+    min-height: 760px;
+    display: flex;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at 78% 25%, rgba(49,93,80,.10), transparent 32%),
+        linear-gradient(135deg, #f8f8f5 0%, #f0f2ef 100%);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr .75fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.kicker {
+    margin-bottom: 25px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    max-width: 950px;
+    margin: 0;
+
+    font-size: clamp(44px, 6.5vw, 82px);
+    line-height: 1.02;
+    letter-spacing: -.055em;
+}
+
+.hero h1 span {
+    color: var(--accent);
+}
+
+.hero-copy {
+    max-width: 780px;
+    margin-top: 30px;
+
+    color: #5e6670;
+    font-size: 18px;
+    line-height: 1.9;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+}
+
+.hero-meta {
+    margin-top: 38px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.meta-pill {
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    background: rgba(255,255,255,.65);
+    color: #5f6670;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Research stamp */
+
+.research-card {
+    position: relative;
+    padding: 34px;
+
+    background: white;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+
+    min-height: 420px;
+}
+
+.research-card::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+
+    border: 1px solid #ecece8;
+    pointer-events: none;
+}
+
+.card-label {
+    position: relative;
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-weight: 800;
+}
+
+.research-number {
+    position: relative;
+    margin: 45px 0 10px;
+
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 75px;
+    line-height: 1;
+
+    color: var(--accent);
+}
+
+.research-title {
+    position: relative;
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 22px;
+    line-height: 1.45;
+}
+
+.research-bottom {
+    position: absolute;
+    left: 34px;
+    right: 34px;
+    bottom: 32px;
+
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* -------------------------------------------------------
+   ABSTRACT
+------------------------------------------------------- */
+
+.abstract-grid {
+    display: grid;
+    grid-template-columns: .75fr 1.25fr;
+    gap: 80px;
+}
+
+.abstract-box {
+    padding: 30px;
+    background: white;
+    border: 1px solid var(--line);
+}
+
+.abstract-box p {
+    margin: 0;
+    color: #4e5661;
+}
+
+/* -------------------------------------------------------
+   STATISTICS
+------------------------------------------------------- */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.stat {
+    padding: 30px 22px;
+    border-right: 1px solid var(--line);
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.stat-number {
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 30px;
+    color: var(--accent);
+}
+
+.stat-label {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+/* -------------------------------------------------------
+   RESEARCH PRINCIPLES
+------------------------------------------------------- */
+
+.principles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+
+    background: var(--line);
+    border: 1px solid var(--line);
+}
+
+.principle {
+    padding: 30px;
+    background: var(--paper);
+}
+
+.principle-number {
+    color: var(--gold);
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 14px;
+}
+
+.principle h3 {
+    margin: 12px 0 8px;
+    font-size: 18px;
+}
+
+.principle p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* -------------------------------------------------------
+   FINDING
+------------------------------------------------------- */
+
+.finding {
+    padding: 48px;
+
+    background: var(--accent);
+    color: white;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.finding::after {
+    content: "01";
+    position: absolute;
+    right: -20px;
+    bottom: -75px;
+
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 250px;
+    color: rgba(255,255,255,.035);
+}
+
+.finding .eyebrow {
+    color: #d6e4df;
+}
+
+.finding .eyebrow::before {
+    background: #d6e4df;
+}
+
+.finding h2 {
+    max-width: 850px;
+    color: white;
+}
+
+.finding p {
+    max-width: 820px;
+    color: #d4ddd9;
+    font-size: 16px;
+}
+
+/* -------------------------------------------------------
+   LEAKAGE
+------------------------------------------------------- */
+
+.leakage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.leakage-card {
+    padding: 30px;
+    background: white;
+    border: 1px solid var(--line);
+}
+
+.leakage-card h3 {
+    margin-top: 0;
+}
+
+.leakage-card ul {
+    padding-left: 20px;
+    color: var(--muted);
+}
+
+.leakage-card li {
+    margin-bottom: 8px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 6px;
+
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.badge-red {
+    background: #f5e7e5;
+    color: var(--danger);
+}
+
+.badge-green {
+    background: #e4eee9;
+    color: var(--accent);
+}
+
+/* -------------------------------------------------------
+   METHODOLOGY
+------------------------------------------------------- */
+
+.method-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.method-step {
+    min-height: 220px;
+    padding: 26px;
+
+    border: 1px solid var(--line);
+    background: white;
+}
+
+.method-step .number {
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 34px;
+    color: var(--gold);
+}
+
+.method-step h3 {
+    font-size: 17px;
+    margin: 20px 0 10px;
+}
+
+.method-step p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* -------------------------------------------------------
+   TABLE
+------------------------------------------------------- */
+
+.table-wrap {
+    overflow-x: auto;
+    background: white;
+    border: 1px solid var(--line);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th,
+td {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    background: #f0f1ee;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #626974;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.best {
+    font-weight: 800;
+    color: var(--accent);
+}
+
+/* -------------------------------------------------------
+   PLOT SYSTEM
+------------------------------------------------------- */
+
+.plot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.plot-card {
+    background: white;
+    border: 1px solid var(--line);
+    padding: 20px;
+}
+
+.plot-card.wide {
+    grid-column: 1 / -1;
+}
+
+.plot-card img {
+    width: 100%;
+    display: block;
+}
+
+.plot-caption {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.plot-number {
+    margin-bottom: 12px;
+    color: var(--gold);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    font-weight: 800;
+}
+
+/* -------------------------------------------------------
+   FEATURE TABLE
+------------------------------------------------------- */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.feature-list {
+    background: white;
+    border: 1px solid var(--line);
+}
+
+.feature-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--line);
+
+    font-size: 13px;
+}
+
+.feature-row:last-child {
+    border-bottom: none;
+}
+
+.feature-name {
+    font-weight: 700;
+}
+
+.feature-value {
+    color: var(--muted);
+}
+
+/* -------------------------------------------------------
+   OPPORTUNITY ENGINE
+------------------------------------------------------- */
+
+.formula {
+    margin: 30px 0;
+
+    padding: 30px;
+
+    background: #111318;
+    color: white;
+
+    overflow-x: auto;
+}
+
+.formula-code {
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    line-height: 2;
+    white-space: nowrap;
+}
+
+.formula-highlight {
+    color: #d6c08b;
+}
+
+/* -------------------------------------------------------
+   CONCLUSION
+------------------------------------------------------- */
+
+.conclusion {
+    padding: 60px;
+
+    background:
+        linear-gradient(135deg, #f1f4f1, #e7ebe8);
+
+    border: 1px solid var(--line);
+}
+
+.conclusion blockquote {
+    margin: 30px 0;
+
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: clamp(24px, 3vw, 40px);
+    line-height: 1.5;
+
+    color: var(--accent);
+}
+
+/* -------------------------------------------------------
+   ARTIFACTS
+------------------------------------------------------- */
+
+.artifacts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.artifact {
+    padding: 22px;
+
+    background: white;
+    border: 1px solid var(--line);
+
+    transition: .2s ease;
+}
+
+.artifact:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.artifact-icon {
+    font-size: 20px;
+    color: var(--gold);
+}
+
+.artifact strong {
+    display: block;
+    margin-top: 13px;
+}
+
+.artifact span {
+    display: block;
+    margin-top: 5px;
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* -------------------------------------------------------
+   FOOTER
+------------------------------------------------------- */
+
+footer {
+    padding: 55px 0;
+
+    background: #111318;
+    color: white;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr .7fr .7fr;
+    gap: 50px;
+}
+
+footer p,
+footer li {
+    color: #9ca3ab;
+    font-size: 13px;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer li {
+    margin-bottom: 8px;
+}
+
+.footer-title {
+    margin-bottom: 15px;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: white;
+}
+
+.copyright {
+    margin-top: 45px;
+    padding-top: 20px;
+    border-top: 1px solid #2b2f35;
+
+    color: #777e87;
+    font-size: 11px;
+}
+
+/* -------------------------------------------------------
+   NOTEBOOK LOADER
+------------------------------------------------------- */
+
+#notebook-status {
+    margin-bottom: 20px;
+
+    padding: 13px 16px;
+
+    background: white;
+    border: 1px solid var(--line);
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#notebook-status.success {
+    border-left: 3px solid var(--accent);
+}
+
+#notebook-status.error {
+    border-left: 3px solid var(--danger);
+}
+
+#notebook-plots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.notebook-plot {
+    padding: 20px;
+    background: white;
+    border: 1px solid var(--line);
+}
+
+.notebook-plot.wide {
+    grid-column: 1 / -1;
+}
+
+.notebook-plot img {
+    display: block;
+    width: 100%;
+}
+
+.notebook-plot-title {
+    margin-bottom: 14px;
+
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-size: 17px;
+}
+
+/* -------------------------------------------------------
+   RESPONSIVE
+------------------------------------------------------- */
+
+@media (max-width: 1050px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero-grid,
+    .abstract-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .research-card {
+        max-width: 600px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stat:nth-child(3) {
+        border-right: none;
+    }
+
+    .stat:nth-child(n+4) {
+        border-top: 1px solid var(--line);
+    }
+
+    .method-flow {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .artifacts {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+@media (max-width: 720px) {
+
+    .section {
+        padding: 70px 0;
+    }
+
+    .container {
+        padding: 0 18px;
+    }
+
+    .nav-inner {
+        padding: 0 18px;
+    }
+
+    .nav-actions .btn:first-child {
+        display: none;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 80px 0;
+    }
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .stats,
+    .principles,
+    .leakage-grid,
+    .method-flow,
+    .feature-grid,
+    .plot-grid,
+    #notebook-plots,
+    .artifacts,
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .stat:last-child {
+        border-bottom: none;
+    }
+
+    .finding,
+    .conclusion {
+        padding: 30px;
+    }
+
+    .plot-card.wide,
+    .notebook-plot.wide {
+        grid-column: auto;
+    }
+
+}
+
+/* -------------------------------------------------------
+   PRINT
+------------------------------------------------------- */
+
+@media print {
+
+    .navbar,
+    .hero-actions,
+    footer {
+        display: none;
+    }
+
+    .section {
+        padding: 45px 0;
+        break-inside: avoid;
+    }
+
+    body {
+        background: white;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
 
-<h1>Google Search Ranking & Discoverability Capstone</h1>
+<nav class="navbar">
 
-<p style="text-align:center;">
-<strong>FlyRank Machine Learning Internship</strong>
-</p>
+    <div class="nav-inner">
 
-<h2>Abstract</h2>
+        <a href="#top" class="brand">
+            <span class="brand-mark">F</span>
+            <span>FLYRANK RESEARCH</span>
+        </a>
 
-<p>
+        <div class="nav-links">
+            <a href="#abstract">Abstract</a>
+            <a href="#methodology">Methodology</a>
+            <a href="#results">Results</a>
+            <a href="#opportunity">Opportunity Engine</a>
+            <a href="#conclusion">Conclusion</a>
+        </div>
 
-This capstone project presents a comprehensive machine learning framework for identifying high-value content refresh opportunities using historical search performance indicators and page-level SEO metrics. The primary objective is to develop an evidence-driven decision-support system capable of prioritizing webpages according to their estimated optimization potential while maintaining methodological transparency and reproducibility.
+        <div class="nav-actions">
 
-A complete analytical pipeline was implemented, including exploratory data analysis, feature engineering, baseline benchmarking, supervised regression modeling, comparative performance evaluation, and opportunity ranking generation. Multiple regression algorithms were systematically evaluated against a Dummy Regressor baseline using established regression metrics to assess predictive capability.
+            <a
+                class="btn btn-light"
+                href="https://github.com/Eshaal356/flyrank-ml-internship"
+                target="_blank"
+                rel="noopener">
+                GitHub
+            </a>
 
-Although the trained machine learning models did not outperform the baseline predictor on unseen data, the study provides valuable empirical insights into the challenges of forecasting optimization opportunities solely from historical SEO signals. The resulting workflow demonstrates a reproducible analytical methodology that can support structured content prioritization while highlighting important limitations and future research opportunities within search intelligence and machine learning applications.
+            <a
+                class="btn btn-dark"
+                href="https://colab.research.google.com/drive/13qIGT6xsn6Mg5dQndWYxgTyDHv_6wnvk?usp=sharing"
+                target="_blank"
+                rel="noopener">
+                Open Colab
+            </a>
 
-</p>
+        </div>
 
-<h2>Research Question</h2>
+    </div>
 
-<p>
+</nav>
 
-To what extent can historical search performance metrics, engagement indicators, and content quality characteristics be utilized to accurately identify webpages that should be prioritized for content refresh and search engine optimization initiatives?
 
-</p>
+<!-- =====================================================
+     HERO
+===================================================== -->
 
-<h2>Decision Supported</h2>
+<header class="hero" id="top">
 
-<p>
+    <div class="container">
 
-This research develops a data-driven decision-support framework designed to assist SEO analysts and digital content strategists in identifying webpages with the greatest estimated optimization opportunity. Rather than relying exclusively on manual review or subjective judgment, the proposed methodology leverages historical performance indicators to generate reproducible opportunity rankings that can guide resource allocation and content improvement strategies.
+        <div class="hero-grid">
 
-</p>
+            <div>
 
-<h2>Selected Lane</h2>
+                <div class="kicker">
+                    FlyRank ML Internship · Capstone Research Artifact
+                </div>
 
-<p>
+                <h1>
+                    Search Intelligence &
+                    <span>Content Opportunity Scoring</span>
+                </h1>
 
-<strong>Refresh / Content Opportunity Scoring</strong>
+                <div class="rule"></div>
 
-</p>
+                <p class="hero-copy">
+                    A research-grade investigation into whether leakage-controlled
+                    search-demand, competition, freshness, content-production,
+                    and contextual signals contain generalizable information
+                    about observed content momentum.
+                </p>
 
-<h2>Dataset</h2>
+                <div class="hero-actions">
 
-<p>
+                    <a
+                        class="btn btn-dark"
+                        href="https://colab.research.google.com/drive/13qIGT6xsn6Mg5dQndWYxgTyDHv_6wnvk?usp=sharing"
+                        target="_blank"
+                        rel="noopener">
+                        Run the Research Notebook →
+                    </a>
 
-The experimental analysis was conducted using the anonymized internship dataset provided for the FlyRank Machine Learning Capstone. The dataset contains historical search performance indicators and page-level SEO metrics designed to support supervised learning for content opportunity assessment while preserving privacy through anonymization.
+                    <a
+                        class="btn btn-light"
+                        href="https://github.com/Eshaal356/flyrank-ml-internship"
+                        target="_blank"
+                        rel="noopener">
+                        View Repository
+                    </a>
 
-</p>
+                </div>
 
-<ul>
+                <div class="hero-meta">
 
-<li><strong>Dataset:</strong> content_refresh_anonymized.csv</li>
+                    <span class="meta-pill">Research Lane: Refresh / Content Opportunity</span>
+                    <span class="meta-pill">Grouped Validation</span>
+                    <span class="meta-pill">Leakage Controlled</span>
+                    <span class="meta-pill">Reproducible</span>
 
-<li>30,000 anonymized webpage observations</li>
+                </div>
 
-<li>44 engineered predictive variables</li>
+            </div>
 
-<li>Historical search performance indicators</li>
 
-<li>Organic visibility and ranking metrics</li>
+            <aside class="research-card">
 
-<li>User engagement measurements</li>
+                <div class="card-label">
+                    Research Identity
+                </div>
 
-<li>Content quality characteristics</li>
+                <div class="research-number">
+                    30K
+                </div>
 
-<li>Privacy-preserving anonymized feature representation</li>
+                <div class="research-title">
+                    observations examined before
+                    methodological filtering
+                </div>
 
-</ul>
+                <div class="research-bottom">
+                    FlyRank ML Internship Capstone<br>
+                    Search Intelligence · Machine Learning · Decision Support
+                </div>
 
-<h2>Methodology</h2>
+            </aside>
 
-<p>
+        </div>
 
-A structured machine learning workflow was implemented to ensure analytical consistency, reproducibility, and objective model comparison. The methodology follows a conventional supervised learning pipeline beginning with data preparation and concluding with ranked content opportunity recommendations.
+    </div>
 
-</p>
+</header>
 
-<ul>
 
-<li>Data Quality Assessment and Cleaning</li>
+<!-- =====================================================
+     ABSTRACT
+===================================================== -->
 
-<li>Exploratory Data Analysis (EDA)</li>
+<section class="section" id="abstract">
 
-<li>Missing Value Investigation</li>
+    <div class="container">
 
-<li>Feature Engineering and Variable Selection</li>
+        <div class="abstract-grid">
 
-<li>Baseline Model Construction</li>
+            <div>
 
-<li>Linear Regression Development</li>
+                <span class="eyebrow">
+                    Abstract
+                </span>
 
-<li>Random Forest Regression Development</li>
+                <h2>
+                    A disciplined study of predictive signal,
+                    not a manufactured success story.
+                </h2>
 
-<li>Comparative Benchmark Evaluation</li>
+            </div>
 
-<li>Regression Performance Assessment</li>
+            <div class="abstract-box">
 
-<li>Content Opportunity Scoring</li>
+                <p>
+                    This study investigates whether a leakage-controlled set
+                    of content, search-demand, competition, freshness,
+                    and content-production signals can explain observed
+                    content momentum and support a transparent prioritization
+                    framework for human content review.
+                </p>
 
-<li>Priority Ranking Generation</li>
+                <br>
 
-</ul>
+                <p>
+                    The analysis deliberately separates predictive modeling
+                    from exploratory opportunity ranking. Identifiers are
+                    excluded from the feature matrix, target-derived variables
+                    are removed, missing-value treatment is learned inside
+                    pipelines, and grouped train/test validation is used as
+                    the primary estimate because observations belong to
+                    anonymized clients.
+                </p>
 
-<h2>Selected Features</h2>
+                <br>
 
-<p>
+                <p>
+                    The resulting evidence does not support a claim that
+                    the tested machine-learning models provide generalizable
+                    predictive improvement over the mean baseline under
+                    grouped held-out validation. The operational contribution
+                    is therefore framed as an auditable decision-support
+                    layer rather than an autonomous forecasting system.
+                </p>
 
-The predictive models were developed using a diverse collection of SEO, engagement, behavioral, and content-related variables intended to capture multiple dimensions of webpage performance. These features collectively represent search visibility, audience interaction, content freshness, competitive intensity, and traffic characteristics that may influence optimization opportunities.
+            </div>
 
-</p>
+        </div>
 
-<ul>
+    </div>
 
-<li>Search Volume</li>
+</section>
 
-<li>Competition</li>
 
-<li>Cost Per Click (CPC)</li>
+<!-- =====================================================
+     KEY NUMBERS
+===================================================== -->
 
-<li>Word Count</li>
+<section class="section" style="padding:0;">
 
-<li>Character Count</li>
+    <div class="container">
 
-<li>Impressions</li>
+        <div class="stats">
 
-<li>Clicks</li>
+            <div class="stat">
+                <div class="stat-number">30,000</div>
+                <div class="stat-label">Dataset rows</div>
+            </div>
 
-<li>Click-Through Rate (CTR)</li>
+            <div class="stat">
+                <div class="stat-number">44</div>
+                <div class="stat-label">Original variables</div>
+            </div>
 
-<li>Average Position</li>
+            <div class="stat">
+                <div class="stat-number">26,612</div>
+                <div class="stat-label">Modeling observations</div>
+            </div>
 
-<li>Sessions</li>
+            <div class="stat">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Predictive features</div>
+            </div>
 
-<li>Engagement Rate</li>
+            <div class="stat">
+                <div class="stat-number">32</div>
+                <div class="stat-label">Anonymized clients</div>
+            </div>
 
-<li>Scroll Rate</li>
+        </div>
 
-<li>Days Since Last Update</li>
+    </div>
 
-<li>AI Traffic Percentage</li>
+</section>
 
-</ul>
-<h2>Model Evaluation</h2>
 
-<p>
+<!-- =====================================================
+     RESEARCH DESIGN
+===================================================== -->
 
-To assess the predictive capability of the proposed framework, three regression models were systematically evaluated using standard regression performance metrics: Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and the coefficient of determination (R² Score). A Dummy Regressor was employed as the benchmark baseline to determine whether the machine learning models were capable of learning meaningful relationships beyond a naïve prediction strategy.
+<section class="section">
 
-The evaluation protocol emphasized objective model comparison rather than maximizing predictive accuracy, thereby ensuring an unbiased assessment of the information contained within the available historical SEO features.
+    <div class="container">
 
-</p>
+        <span class="eyebrow">
+            Research Design
+        </span>
 
-<table>
+        <h2>
+            Methodological safeguards were treated as
+            first-class research objects.
+        </h2>
 
-<tr>
-<th>Model</th>
-<th>Mean Absolute Error (MAE)</th>
-<th>Root Mean Squared Error (RMSE)</th>
-<th>R² Score</th>
-</tr>
+        <p class="lead">
+            The capstone is intentionally structured around validity,
+            reproducibility, interpretability, and disciplined inference.
+        </p>
 
-<tr>
-<td>Dummy Regressor (Baseline)</td>
-<td>64.1583</td>
-<td>315.9668</td>
-<td>-0.0001</td>
-</tr>
+        <div class="principles">
 
-<tr>
-<td>Linear Regression</td>
-<td>65.8695</td>
-<td>317.0327</td>
-<td>-0.0068</td>
-</tr>
+            <article class="principle">
+                <div class="principle-number">01</div>
+                <h3>Target Audit</h3>
+                <p>
+                    The target variable is audited before modeling to establish
+                    what is actually being measured.
+                </p>
+            </article>
 
-<tr>
-<td>Random Forest Regressor</td>
-<td>71.7958</td>
-<td>351.5542</td>
-<td>-0.2380</td>
-</tr>
+            <article class="principle">
+                <div class="principle-number">02</div>
+                <h3>Leakage Control</h3>
+                <p>
+                    Variables that directly encode or temporally entangle
+                    the target are excluded.
+                </p>
+            </article>
 
-</table>
+            <article class="principle">
+                <div class="principle-number">03</div>
+                <h3>Grouped Validation</h3>
+                <p>
+                    Client groups are separated between training and testing
+                    to prevent optimistic leakage across related observations.
+                </p>
+            </article>
 
-<p style="background:#e8f5e9;padding:15px;border-left:6px solid green;">
+            <article class="principle">
+                <div class="principle-number">04</div>
+                <h3>Baseline Comparison</h3>
+                <p>
+                    A mean dummy regressor is mandatory, preventing weak models
+                    from being presented as useful merely because they are
+                    technically non-trivial.
+                </p>
+            </article>
 
-<strong>Best Performing Model:</strong> Dummy Regressor
+            <article class="principle">
+                <div class="principle-number">05</div>
+                <h3>Pipeline Integrity</h3>
+                <p>
+                    Missing-value treatment and preprocessing are learned
+                    inside modeling pipelines after the split.
+                </p>
+            </article>
 
-</p>
+            <article class="principle">
+                <div class="principle-number">06</div>
+                <h3>Untouched Test Evaluation</h3>
+                <p>
+                    Final predictive metrics are evaluated on held-out data
+                    rather than training observations.
+                </p>
+            </article>
 
-<p>
+            <article class="principle">
+                <div class="principle-number">07</div>
+                <h3>Predictive / Exploratory Separation</h3>
+                <p>
+                    Predictive modeling and opportunity ranking are explicitly
+                    treated as different analytical tasks.
+                </p>
+            </article>
 
-The comparative evaluation demonstrated that neither Linear Regression nor Random Forest Regression achieved measurable improvements over the baseline predictor. Consequently, the Dummy Regressor remained the strongest-performing model under the selected evaluation criteria.
+            <article class="principle">
+                <div class="principle-number">08</div>
+                <h3>Claim Discipline</h3>
+                <p>
+                    The analysis does not claim causality, Google-algorithm
+                    knowledge, or guaranteed future performance.
+                </p>
+            </article>
 
-</p>
+        </div>
 
+    </div>
 
+</section>
 
-<h2>Results</h2>
 
-<p>
+<!-- =====================================================
+     CENTRAL FINDING
+===================================================== -->
 
-The experimental findings indicate that historical search performance variables alone provided limited predictive information for estimating future content opportunity scores. Although multiple supervised learning algorithms were investigated, none produced statistically meaningful improvements over the baseline benchmark.
+<section class="section">
 
-Rather than representing a limitation of the analytical workflow itself, these findings emphasize the inherent complexity of search engine optimization, where ranking potential is influenced by numerous external factors that were unavailable within the anonymized dataset.
+    <div class="container">
 
-</p>
+        <div class="finding">
 
-<p>
+            <span class="eyebrow">
+                Central Finding
+            </span>
 
-Despite the modest predictive performance, the developed framework successfully generated reproducible content opportunity rankings that provide a structured basis for prioritizing webpages requiring manual review, optimization, and strategic content enhancement.
+            <h2>
+                The negative result is itself a research result.
+            </h2>
 
-</p>
+            <p>
+                Under grouped held-out validation, no tested machine-learning
+                model improved upon the mean baseline. Ridge Regression was
+                the strongest non-dummy model by MAE, but its MAE remained
+                above the baseline. The appropriate interpretation is therefore
+                limited predictive signal under the tested design—not failure
+                of the research.
+            </p>
 
+            <p>
+                This distinction is fundamental: a rigorous empirical study
+                should preserve evidence even when the evidence does not
+                produce an impressive predictive score.
+            </p>
 
+        </div>
 
-<h2>Interpretation of Findings</h2>
+    </div>
 
-<p>
+</section>
 
-The outcome of this study demonstrates that historical SEO metrics alone may not sufficiently explain future optimization opportunities. Modern search engine performance depends upon a diverse combination of semantic relevance, content quality, user intent, backlink authority, algorithmic updates, technical SEO, and competitive dynamics, many of which were intentionally excluded from the anonymized internship dataset.
 
-The superior performance of the Dummy Regressor therefore suggests that additional contextual variables, richer feature engineering strategies, temporal information, or more sophisticated learning architectures may be necessary before reliable prediction becomes feasible.
+<!-- =====================================================
+     TARGET AUDIT
+===================================================== -->
 
-Importantly, these results remain scientifically valuable because negative findings contribute to a more realistic understanding of machine learning limitations within practical SEO applications.
+<section class="section">
 
-</p>
+    <div class="container">
 
+        <span class="eyebrow">
+            Measurement Validity
+        </span>
 
+        <h2>
+            Target construction was independently audited.
+        </h2>
 
-<h2>Artifacts Generated</h2>
+        <div class="leakage-grid">
 
-<p>
+            <article class="leakage-card">
 
-Throughout the project, several analytical artifacts were produced to improve transparency, reproducibility, and interpretability of the complete machine learning workflow. These outputs collectively document every stage of the experimentation process.
+                <span class="badge badge-green">
+                    Confirmed
+                </span>
 
-</p>
+                <h3>
+                    Target reconstruction
+                </h3>
 
-<ul>
+                <p>
+                    The notebook reconstructs <strong>trend_pct</strong>
+                    from the relationship between impressions in the
+                    last 30 days and the previous 30 days.
+                </p>
 
-<li>Comprehensive Dataset Summary</li>
+                <p>
+                    26,612 rows were tested. The median absolute difference
+                    was approximately <strong>0.022 percentage points</strong>,
+                    with 100% of audited rows matching within 0.1 percentage
+                    point.
+                </p>
 
-<li>Missing Value Analysis Report</li>
+            </article>
 
-<li>Exploratory Data Analysis Outputs</li>
 
-<li>Feature Engineering Pipeline</li>
+            <article class="leakage-card">
 
-<li>Regression Model Performance Comparison</li>
+                <span class="badge badge-red">
+                    Excluded
+                </span>
 
-<li>Baseline versus Machine Learning Benchmark Analysis</li>
+                <h3>
+                    Leakage variables
+                </h3>
 
-<li>Actual versus Predicted Scatter Plot</li>
+                <ul>
+                    <li>impressions_last_30d</li>
+                    <li>impressions_prev_30d</li>
+                    <li>trend_direction</li>
+                    <li>period-comparison click/session variables</li>
+                    <li>90-day performance aggregates</li>
+                    <li>temporally entangled engagement metrics</li>
+                    <li>content_id and client_id</li>
+                    <li>the target itself</li>
+                </ul>
 
-<li>Top 20 Ranked Content Opportunity Recommendations</li>
+            </article>
 
-<li>Model Evaluation Metrics</li>
+        </div>
 
-<li>Final Recommendation Framework</li>
+    </div>
 
-</ul>
+</section>
 
 
+<!-- =====================================================
+     METHODOLOGY
+===================================================== -->
 
-<h2>Top 20 Ranked Content Opportunity Recommendations</h2>
+<section class="section" id="methodology">
 
-<p>
+    <div class="container">
 
-Following model evaluation, webpages were ranked according to their estimated optimization opportunity score. Each recommendation includes the primary action together with the corresponding decision rationale generated from the analytical workflow.
+        <span class="eyebrow">
+            Methodology
+        </span>
 
-These rankings should be interpreted as decision-support recommendations designed to assist SEO professionals in prioritizing content review activities rather than deterministic predictions of future Google rankings.
+        <h2>
+            From raw warehouse extract to defensible evidence.
+        </h2>
 
-</p>
+        <p class="lead">
+            The workflow moves sequentially from data audit to target
+            validation, feature construction, grouped modeling,
+            diagnostic analysis, and finally a transparent opportunity index.
+        </p>
 
-<table>
+        <div class="method-flow">
 
-<tr>
-<th>Rank</th>
-<th>Recommended Action</th>
-<th>Primary Reason</th>
-</tr>
+            <article class="method-step">
+                <div class="number">01</div>
+                <h3>Ingestion & Audit</h3>
+                <p>
+                    Load the anonymized content warehouse extract and
+                    establish its schema, missingness, identifiers,
+                    and dimensional structure.
+                </p>
+            </article>
 
-<tr><td>1</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>2</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>3</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>4</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>5</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>6</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>7</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>8</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>9</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>10</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>11</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>12</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>13</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>14</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>15</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>16</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>17</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>18</td><td>Refresh Immediately</td><td>General Optimization Opportunity</td></tr>
-<tr><td>19</td><td>Refresh Immediately</td><td>High Search Demand</td></tr>
-<tr><td>20</td><td>Refresh Immediately</td><td>Declining Trend</td></tr>
+            <article class="method-step">
+                <div class="number">02</div>
+                <h3>Leakage Investigation</h3>
+                <p>
+                    Determine whether available fields mathematically
+                    or temporally encode the target and remove them
+                    from predictive modeling.
+                </p>
+            </article>
 
-</table>
+            <article class="method-step">
+                <div class="number">03</div>
+                <h3>Grouped Modeling</h3>
+                <p>
+                    Train Dummy, Ridge, Random Forest, and Extra Trees
+                    models under client-grouped held-out validation.
+                </p>
+            </article>
 
+            <article class="method-step">
+                <div class="number">04</div>
+                <h3>Decision Support</h3>
+                <p>
+                    Construct a transparent opportunity score using
+                    demand, staleness, competition, and lifecycle signals.
+                </p>
+            </article>
 
+        </div>
 
-<h2>Visualizations</h2>
+    </div>
 
-<p>
+</section>
 
-To complement the quantitative evaluation, diagnostic visualizations were generated to examine prediction quality and overall model behavior. The accompanying notebook includes an <strong>Actual versus Predicted Values</strong> scatter plot that compares observed outcomes with model predictions.
 
-The visualization further reinforces the numerical evaluation by illustrating that the trained regression models exhibited limited predictive improvement relative to the baseline Dummy Regressor, thereby supporting the conclusions drawn from the statistical performance metrics.
+<!-- =====================================================
+     FEATURE MATRIX
+===================================================== -->
 
-</p>
-<h2>Future Work</h2>
+<section class="section">
 
-<p>
+    <div class="container">
 
-While the present study establishes a reproducible framework for content opportunity scoring, several directions remain available for future investigation. Incorporating longitudinal search performance data, semantic content embeddings, backlink authority metrics, topical relevance signals, and temporal trend analysis may substantially improve predictive capability.
+        <span class="eyebrow">
+            Predictive Feature Matrix
+        </span>
 
-Future experimentation may also explore advanced ensemble learning algorithms such as Gradient Boosting, XGBoost, LightGBM, CatBoost, and neural network architectures. Furthermore, integrating Large Language Models (LLMs) for semantic content quality assessment could provide additional contextual information beyond traditional numerical SEO metrics, potentially improving both prediction accuracy and practical decision support.
+        <h2>
+            Twelve features survived the methodological filter.
+        </h2>
 
-</p>
+        <div class="feature-grid">
 
+            <div class="feature-list">
 
+                <div class="feature-row">
+                    <span class="feature-name">search_volume</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-<h2>Limitations</h2>
+                <div class="feature-row">
+                    <span class="feature-name">competition</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-<p>
+                <div class="feature-row">
+                    <span class="feature-name">cpc</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-Although the proposed methodology provides a transparent analytical framework for ranking content opportunities, several limitations should be acknowledged to ensure accurate interpretation of the findings.
+                <div class="feature-row">
+                    <span class="feature-name">word_count</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-</p>
+                <div class="feature-row">
+                    <span class="feature-name">char_count</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-<ul>
+                <div class="feature-row">
+                    <span class="feature-name">content_age_days</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-<li>The dataset represents a historical snapshot rather than a continuously evolving search environment.</li>
+                <div class="feature-row">
+                    <span class="feature-name">days_since_last_update</span>
+                    <span class="feature-value">Numeric</span>
+                </div>
 
-<li>Important external ranking factors, including backlink quality, domain authority, competitor activity, user search intent, and Google algorithm updates, were not available within the anonymized dataset.</li>
+            </div>
 
-<li>The anonymized feature representation restricts domain-specific interpretation while preserving data privacy.</li>
+            <div class="feature-list">
 
-<li>The evaluated regression models demonstrated limited predictive capability under the available feature space.</li>
+                <div class="feature-row">
+                    <span class="feature-name">competition_level</span>
+                    <span class="feature-value">Categorical</span>
+                </div>
 
-<li>The generated rankings should be interpreted as decision-support recommendations rather than causal estimates of future search ranking improvements.</li>
+                <div class="feature-row">
+                    <span class="feature-name">content_type</span>
+                    <span class="feature-value">Categorical</span>
+                </div>
 
-<li>Additional contextual features and richer behavioral data may substantially improve future predictive performance.</li>
+                <div class="feature-row">
+                    <span class="feature-name">main_intent</span>
+                    <span class="feature-value">Categorical</span>
+                </div>
 
-</ul>
+                <div class="feature-row">
+                    <span class="feature-name">provider_used</span>
+                    <span class="feature-value">Categorical</span>
+                </div>
 
+                <div class="feature-row">
+                    <span class="feature-name">model_used</span>
+                    <span class="feature-value">Categorical</span>
+                </div>
 
+            </div>
 
-<h2>Reproducibility</h2>
+        </div>
 
-<p>
+    </div>
 
-Reproducibility represents a fundamental principle of this project. Every stage of the analytical workflow, including data preprocessing, exploratory data analysis, feature engineering, model development, baseline comparison, performance evaluation, visualization generation, and recommendation ranking, has been fully documented within the accompanying Jupyter Notebook.
+</section>
 
-This documentation enables independent verification of the complete workflow and facilitates future extension, experimentation, and comparative evaluation by researchers, mentors, and practitioners.
 
-</p>
+<!-- =====================================================
+     MODEL RESULTS
+===================================================== -->
 
+<section class="section" id="results">
 
+    <div class="container">
 
-<h2>Project Resources</h2>
+        <span class="eyebrow">
+            Empirical Results
+        </span>
 
-<p>
+        <h2>
+            Grouped held-out validation does not support
+            predictive superiority over the baseline.
+        </h2>
 
-The complete implementation, including source code, experimental workflow, and supporting documentation, is publicly accessible through the resources below.
+        <p class="lead">
+            The mean dummy regressor remains the strongest model by MAE.
+            Ridge Regression is the best non-dummy model, but its error is
+            still higher than the baseline.
+        </p>
 
-</p>
 
-<p>
+        <div class="table-wrap">
 
-<a class="button"
-href="https://colab.research.google.com/github/Eshaal356/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb"
-target="_blank">
+            <table>
 
-View Complete Capstone Notebook (Google Colab)
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>MAE</th>
+                        <th>RMSE</th>
+                        <th>R²</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
 
-</a>
+                <tbody>
 
-</p>
+                    <tr>
+                        <td class="best">Dummy Regressor</td>
+                        <td class="best">65.4752</td>
+                        <td>295.9562</td>
+                        <td>-0.0005</td>
+                        <td>Baseline</td>
+                    </tr>
 
-<p>
+                    <tr>
+                        <td>Ridge Regression</td>
+                        <td>71.3596</td>
+                        <td>297.5412</td>
+                        <td>-0.0113</td>
+                        <td>Best non-dummy model</td>
+                    </tr>
 
-<a class="button"
-href="https://github.com/Eshaal356/flyrank-ml-internship"
-target="_blank">
+                    <tr>
+                        <td>Random Forest</td>
+                        <td>88.6801</td>
+                        <td>309.0226</td>
+                        <td>-0.0908</td>
+                        <td>Limited predictive signal</td>
+                    </tr>
 
-View GitHub Repository
+                    <tr>
+                        <td>Extra Trees</td>
+                        <td>88.9691</td>
+                        <td>309.3702</td>
+                        <td>-0.0933</td>
+                        <td>Limited predictive signal</td>
+                    </tr>
 
-</a>
+                </tbody>
 
-</p>
+            </table>
 
+        </div>
 
+        <br><br>
 
-<h2>Acknowledgments</h2>
+        <div class="finding" style="background:#fff;color:#111318;border:1px solid var(--line);">
 
-<p>
+            <span class="eyebrow" style="color:#173f35;">
+                Statistical interpretation
+            </span>
 
-This capstone research was completed as part of the <strong>FlyRank Machine Learning Internship</strong>. The project was developed using the anonymized internship dataset and conducted in accordance with the official capstone project guidelines.
+            <h2 style="color:#173f35;">
+                Relative MAE improvement vs. dummy:
+                <strong>-8.99%</strong>
+            </h2>
 
-The internship provided valuable exposure to practical machine learning experimentation, regression modeling, comparative benchmark evaluation, and evidence-based decision support for search engine optimization. The project reflects the application of reproducible data science methodologies to a real-world SEO analytics problem while emphasizing methodological transparency, objective evaluation, and responsible interpretation of experimental findings.
+            <p style="color:#626974;">
+                Because the best non-dummy model has higher MAE than the
+                baseline, the machine-learning system should not be presented
+                as a validated predictive engine for future content momentum.
+            </p>
 
-The author gratefully acknowledges FlyRank for providing the learning opportunity, project framework, anonymized dataset, and practical environment through which this research was conducted.
+        </div>
 
-</p>
+    </div>
 
+</section>
 
+
+<!-- =====================================================
+     ACTUAL NOTEBOOK PLOTS
+===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Empirical Figures
+        </span>
+
+        <h2>
+            Figures reproduced directly from the capstone notebook.
+        </h2>
+
+        <p class="lead">
+            The section below reads the embedded PNG outputs directly from
+            <strong>capstone.ipynb</strong>. Keep the notebook in the same
+            directory as this HTML file so the original analytical figures
+            can be rendered without redrawing or approximating them.
+        </p>
+
+        <div id="notebook-status">
+            Loading original notebook figures…
+        </div>
+
+        <div id="notebook-plots"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FEATURE IMPORTANCE
+===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Exploratory Signal
+        </span>
+
+        <h2>
+            Permutation importance identifies where the
+            exploratory model finds sensitivity.
+        </h2>
+
+        <p class="lead">
+            These values are diagnostic rather than causal explanations.
+            They describe the change in model scoring loss under permutation
+            within the exploratory analysis.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Importance Mean</th>
+                        <th>Importance Std</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>word_count</td>
+                        <td>10.925458</td>
+                        <td>0.520312</td>
+                    </tr>
+
+                    <tr>
+                        <td>search_volume</td>
+                        <td>10.855314</td>
+                        <td>0.973300</td>
+                    </tr>
+
+                    <tr>
+                        <td>char_count</td>
+                        <td>5.447605</td>
+                        <td>0.413041</td>
+                    </tr>
+
+                    <tr>
+                        <td>competition</td>
+                        <td>3.428014</td>
+                        <td>0.381740</td>
+                    </tr>
+
+                    <tr>
+                        <td>days_since_last_update</td>
+                        <td>2.959371</td>
+                        <td>0.262951</td>
+                    </tr>
+
+                    <tr>
+                        <td>cpc</td>
+                        <td>2.074102</td>
+                        <td>0.207187</td>
+                    </tr>
+
+                    <tr>
+                        <td>content_age_days</td>
+                        <td>1.845638</td>
+                        <td>0.945165</td>
+                    </tr>
+
+                    <tr>
+                        <td>provider_used</td>
+                        <td>0.022146</td>
+                        <td>0.001481</td>
+                    </tr>
+
+                    <tr>
+                        <td>competition_level</td>
+                        <td>-0.088470</td>
+                        <td>0.027482</td>
+                    </tr>
+
+                    <tr>
+                        <td>main_intent</td>
+                        <td>-0.440405</td>
+                        <td>0.189133</td>
+                    </tr>
+
+                    <tr>
+                        <td>content_type</td>
+                        <td>-0.531634</td>
+                        <td>0.037549</td>
+                    </tr>
+
+                    <tr>
+                        <td>model_used</td>
+                        <td>-4.921439</td>
+                        <td>0.301586</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     OPPORTUNITY ENGINE
+===================================================== -->
+
+<section class="section" id="opportunity">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Decision-Support Layer
+        </span>
+
+        <h2>
+            When prediction is limited, transparent prioritization
+            can still create analytical value.
+        </h2>
+
+        <p class="lead">
+            The opportunity engine is explicitly not presented as a forecast.
+            It is an interpretable review-priority index designed to help
+            human analysts decide which content deserves attention first.
+        </p>
+
+
+        <div class="formula">
+
+            <div class="formula-code">
+
+                <span class="formula-highlight">Opportunity Score</span>
+                =
+                0.40 × Demand Signal
+                +
+                0.30 × Staleness Signal
+                +
+                0.20 × Competition Signal
+                +
+                0.10 × Lifecycle Signal
+
+            </div>
+
+        </div>
+
+
+        <div class="method-flow">
+
+            <article class="method-step">
+
+                <div class="number">40%</div>
+
+                <h3>Search Demand</h3>
+
+                <p>
+                    Percentile-ranked search volume.
+                    Higher demand increases review priority.
+                </p>
+
+            </article>
+
+
+            <article class="method-step">
+
+                <div class="number">30%</div>
+
+                <h3>Staleness</h3>
+
+                <p>
+                    Percentile-ranked days since the content
+                    was last updated.
+                </p>
+
+            </article>
+
+
+            <article class="method-step">
+
+                <div class="number">20%</div>
+
+                <h3>Competition</h3>
+
+                <p>
+                    Percentile-ranked competition signal
+                    from the available dataset.
+                </p>
+
+            </article>
+
+
+            <article class="method-step">
+
+                <div class="number">10%</div>
+
+                <h3>Lifecycle</h3>
+
+                <p>
+                    Percentile-ranked content age as an
+                    additional review signal.
+                </p>
+
+            </article>
+
+        </div>
+
+        <br><br>
+
+        <div class="leakage-grid">
+
+            <div class="leakage-card">
+
+                <span class="badge badge-green">
+                    High Priority Review
+                </span>
+
+                <h3>
+                    Top 20 opportunities
+                </h3>
+
+                <p>
+                    The ranking system sorts eligible observations by
+                    opportunity score and assigns a human-review priority.
+                </p>
+
+                <p>
+                    The notebook identified <strong>27,532</strong> rows
+                    eligible for opportunity scoring.
+                </p>
+
+            </div>
+
+
+            <div class="leakage-card">
+
+                <span class="badge badge-green">
+                    Human-in-the-loop
+                </span>
+
+                <h3>
+                    No autonomous action
+                </h3>
+
+                <p>
+                    Reason codes such as "Stale Content", "High Search Demand",
+                    and "Mature Content" are deliberately diagnostic.
+                </p>
+
+                <p>
+                    They do not imply causality or guarantee future traffic,
+                    ranking, click, or business outcomes.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUBGROUP ANALYSIS
+===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Subgroup Analysis
+        </span>
+
+        <h2>
+            Opportunity signals differ across content and search intent.
+        </h2>
+
+        <p class="lead">
+            These comparisons are descriptive rather than causal. They
+            characterize how the opportunity index behaves across groups.
+        </p>
+
+
+        <h3>Content Type</h3>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Content Type</th>
+                        <th>Pages</th>
+                        <th>Mean Score</th>
+                        <th>Median Score</th>
+                        <th>Mean Staleness</th>
+                        <th>Mean Demand</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>keyword article</td>
+                        <td>26,835</td>
+                        <td>50.6286</td>
+                        <td>49.2899</td>
+                        <td>47.8334</td>
+                        <td>163.0091</td>
+                    </tr>
+
+                    <tr>
+                        <td>comparison article</td>
+                        <td>697</td>
+                        <td>25.8707</td>
+                        <td>27.1389</td>
+                        <td>18.0100</td>
+                        <td>0.0000</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <br><br>
+
+        <h3>Search Intent</h3>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Intent</th>
+                        <th>Pages</th>
+                        <th>Mean Score</th>
+                        <th>Median Score</th>
+                        <th>Mean Staleness</th>
+                        <th>Mean Demand</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Transactional</td>
+                        <td>5,691</td>
+                        <td>59.9529</td>
+                        <td>59.6194</td>
+                        <td>52.9181</td>
+                        <td>90.6783</td>
+                    </tr>
+
+                    <tr>
+                        <td>Commercial</td>
+                        <td>4,561</td>
+                        <td>58.5345</td>
+                        <td>58.4936</td>
+                        <td>50.6895</td>
+                        <td>166.9458</td>
+                    </tr>
+
+                    <tr>
+                        <td>Navigational</td>
+                        <td>46</td>
+                        <td>54.0099</td>
+                        <td>57.8683</td>
+                        <td>41.0217</td>
+                        <td>63.0435</td>
+                    </tr>
+
+                    <tr>
+                        <td>Informational</td>
+                        <td>17,092</td>
+                        <td>44.5520</td>
+                        <td>43.5909</td>
+                        <td>44.2206</td>
+                        <td>181.0180</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ROBUSTNESS
+===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Robustness Analysis
+        </span>
+
+        <h2>
+            Validation design materially changes the apparent result.
+        </h2>
+
+        <p class="lead">
+            A secondary random row split was performed as a sensitivity
+            analysis. Grouped validation remains the primary estimate because
+            observations are nested within anonymized clients.
+        </p>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Validation Design</th>
+                        <th>MAE</th>
+                        <th>RMSE</th>
+                        <th>R²</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Grouped by client</td>
+                        <td>88.9691</td>
+                        <td>309.3702</td>
+                        <td>-0.0933</td>
+                    </tr>
+
+                    <tr>
+                        <td>Random row split</td>
+                        <td>64.7979</td>
+                        <td>317.9670</td>
+                        <td>-0.0128</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <br>
+
+        <div class="finding">
+
+            <span class="eyebrow">
+                Why this matters
+            </span>
+
+            <h2>
+                Random splitting can create a more optimistic picture
+                of generalization.
+            </h2>
+
+            <p>
+                The difference demonstrates why grouped validation is retained
+                as the primary design rather than selecting whichever split
+                produces the most flattering metric.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     RESEARCH CONCLUSION
+===================================================== -->
+
+<section class="section" id="conclusion">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Research Conclusion
+        </span>
+
+        <div class="conclusion">
+
+            <h2>
+                What the evidence actually supports.
+            </h2>
+
+            <blockquote>
+                "The resulting system should be presented as a
+                research-backed decision support layer for content review,
+                not as an autonomous optimizer or a validated forecast
+                of search performance."
+            </blockquote>
+
+            <p>
+                The capstone establishes two principal contributions.
+            </p>
+
+            <p>
+                <strong>First:</strong>
+                it tests whether historical content, search, competition,
+                freshness, and production attributes contain generalizable
+                predictive information about observed content momentum.
+            </p>
+
+            <p>
+                <strong>Second:</strong>
+                it converts available search-intelligence context into a
+                transparent, auditable opportunity-review system without
+                overstating predictive or causal capability.
+            </p>
+
+            <p>
+                The study therefore prioritizes methodological defensibility
+                over artificially impressive model performance.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     REPRODUCIBILITY
+===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Reproducibility
+        </span>
+
+        <h2>
+            The research artifact is designed to be rerun.
+        </h2>
+
+        <p class="lead">
+            The notebook uses a fixed random seed of 42 and exports public-safe
+            analytical artifacts for inspection and repository versioning.
+        </p>
+
+
+        <div class="artifacts">
+
+            <div class="artifact">
+                <div class="artifact-icon">01</div>
+                <strong>schema_audit.csv</strong>
+                <span>Dataset schema and missingness audit</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">02</div>
+                <strong>target_summary.csv</strong>
+                <span>Target distribution summary</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">03</div>
+                <strong>model_comparison.csv</strong>
+                <span>Grouped model evaluation metrics</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">04</div>
+                <strong>permutation_importance.csv</strong>
+                <span>Exploratory feature sensitivity</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">05</div>
+                <strong>top_20_content_opportunities.csv</strong>
+                <span>Highest-ranked review opportunities</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">06</div>
+                <strong>validation_sensitivity.csv</strong>
+                <span>Grouped vs random validation comparison</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">07</div>
+                <strong>content_type_summary.csv</strong>
+                <span>Content-type subgroup analysis</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">08</div>
+                <strong>search_intent_summary.csv</strong>
+                <span>Search-intent subgroup analysis</span>
+            </div>
+
+            <div class="artifact">
+                <div class="artifact-icon">09</div>
+                <strong>content_opportunity_rankings.csv</strong>
+                <span>Public-safe ranking export</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ACCESS RESEARCH
+===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            Research Access
+        </span>
+
+        <h2>
+            Inspect the complete analytical workflow.
+        </h2>
+
+        <p class="lead">
+            The website is the presentation layer. The notebook and repository
+            remain the primary reproducibility artifacts.
+        </p>
+
+        <div class="hero-actions">
+
+            <a
+                class="btn btn-dark"
+                href="https://colab.research.google.com/drive/13qIGT6xsn6Mg5dQndWYxgTyDHv_6wnvk?usp=sharing"
+                target="_blank"
+                rel="noopener">
+                Google Colab →
+            </a>
+
+            <a
+                class="btn btn-light"
+                href="https://github.com/Eshaal356/flyrank-ml-internship"
+                target="_blank"
+                rel="noopener">
+                GitHub Repository →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
 
-<hr style="margin:30px 0;">
+    <div class="container">
 
-<h3 style="color:#1565C0;">Google Search Ranking & Discoverability Capstone</h3>
+        <div class="footer-grid">
 
-<p>
-<strong>FlyRank Machine Learning Internship</strong>
-</p>
+            <div>
 
-<p>
+                <div class="brand">
+                    <span class="brand-mark">F</span>
+                    <span>FLYRANK RESEARCH</span>
+                </div>
 
-Developed by <strong>Eshaal Malik</strong>
+                <p>
+                    Search Intelligence & Content Opportunity Scoring.
+                    A FlyRank ML Internship capstone research artifact.
+                </p>
 
-</p>
+                <p>
+                    Independent educational research.
+                    No claim of endorsement, causality, proprietary ranking
+                    algorithm access, or guaranteed future Google outcomes.
+                </p>
 
-<p>
+            </div>
 
-Website:
-<a href="https://eshaal356.github.io/flyrank-ml-internship/" target="_blank">
-https://eshaal356.github.io/flyrank-ml-internship/
-</a>
 
-</p>
+            <div>
 
-<p>
+                <div class="footer-title">
+                    Research
+                </div>
 
-GitHub Repository:
-<a href="https://github.com/Eshaal356/flyrank-ml-internship" target="_blank">
-https://github.com/Eshaal356/flyrank-ml-internship
-</a>
+                <ul>
+                    <li><a href="#abstract">Abstract</a></li>
+                    <li><a href="#methodology">Methodology</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#opportunity">Opportunity Engine</a></li>
+                    <li><a href="#conclusion">Conclusion</a></li>
+                </ul>
 
-</p>
+            </div>
 
-<p>
 
-© 2026 • Machine Learning Capstone Project • FlyRank Internship
+            <div>
 
-</p>
+                <div class="footer-title">
+                    External
+                </div>
+
+                <ul>
+
+                    <li>
+                        <a
+                            href="https://colab.research.google.com/drive/13qIGT6xsn6Mg5dQndWYxgTyDHv_6wnvk?usp=sharing"
+                            target="_blank"
+                            rel="noopener">
+                            Google Colab
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="https://github.com/Eshaal356/flyrank-ml-internship"
+                            target="_blank"
+                            rel="noopener">
+                            GitHub
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 Eshaal Malik · FlyRank ML Internship Capstone ·
+            Search Intelligence & Content Opportunity Scoring
+
+        </div>
+
+    </div>
 
 </footer>
 
-</div>
+
+<!-- =====================================================
+     JAVASCRIPT
+     Reads the ORIGINAL PNG figures embedded in
+     capstone.ipynb.
+===================================================== -->
+
+<script>
+
+(async function loadNotebookFigures() {
+
+    const status = document.getElementById("notebook-status");
+    const gallery = document.getElementById("notebook-plots");
+
+    /*
+        Keep capstone.ipynb in the SAME DIRECTORY as index.html.
+
+        Example:
+
+        /project/
+        ├── index.html
+        ├── capstone.ipynb
+        └── content_refresh_anonymized.csv
+    */
+
+    const notebookPath = "./capstone.ipynb";
+
+    const figureTitles = [
+        "Missingness Profile of Modeling Variables",
+        "Distribution of Observed Content Momentum",
+        "Grouped Held-Out Prediction Error",
+        "Grouped Held-Out RMSE",
+        "Grouped Held-Out R²",
+        "Exploratory Model: Observed vs Predicted",
+        "Exploratory Random Forest Residual Diagnostic",
+        "Residual Distribution",
+        "Exploratory Predictive Signal: Permutation Importance",
+        "Top 20 Content Review Opportunities",
+        "Content Review Priority Distribution",
+        "Distribution of Exploratory Opportunity Scores"
+    ];
+
+    const figureCaptions = [
+        "Modeling-variable missingness before preprocessing.",
+        "Observed trend distribution shown using the 1st–99th percentile view.",
+        "MAE comparison across the baseline and predictive models.",
+        "RMSE comparison under grouped held-out validation.",
+        "R² comparison under grouped held-out validation.",
+        "Observed versus Random Forest predicted trend values.",
+        "Residuals plotted against exploratory Random Forest predictions.",
+        "Distribution of residuals using the 1st–99th percentile view.",
+        "Permutation-based diagnostic of exploratory predictive sensitivity.",
+        "Highest-ranked content opportunities according to the transparent review index.",
+        "Distribution of human-review priority labels.",
+        "Distribution of opportunity scores with review thresholds."
+    ];
+
+    try {
+
+        const response = await fetch(notebookPath, {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error(
+                "Could not load capstone.ipynb (" +
+                response.status +
+                ")."
+            );
+        }
+
+        const notebook = await response.json();
+
+        const images = [];
+
+        notebook.cells.forEach((cell, cellIndex) => {
+
+            if (!cell.outputs) return;
+
+            cell.outputs.forEach(output => {
+
+                const data = output.data || {};
+
+                if (data["image/png"]) {
+
+                    let png = data["image/png"];
+
+                    if (Array.isArray(png)) {
+                        png = png.join("");
+                    }
+
+                    images.push({
+                        cellIndex,
+                        src: "data:image/png;base64," + png
+                    });
+
+                }
+
+            });
+
+        });
+
+
+        if (!images.length) {
+            throw new Error(
+                "No embedded PNG figures were found in the notebook."
+            );
+        }
+
+
+        status.className = "success";
+
+        status.innerHTML =
+            "<strong>Original notebook figures loaded.</strong> " +
+            images.length +
+            " embedded analytical figures detected directly from capstone.ipynb.";
+
+
+        images.forEach((figure, index) => {
+
+            const card = document.createElement("article");
+
+            card.className =
+                "notebook-plot" +
+                (
+                    index === 0 ||
+                    index === 5 ||
+                    index === 8
+                        ? " wide"
+                        : ""
+                );
+
+
+            const title =
+                figureTitles[index] ||
+                "Notebook Figure " + (index + 1);
+
+
+            const caption =
+                figureCaptions[index] ||
+                "Original analytical figure embedded in the capstone notebook.";
+
+
+            card.innerHTML = `
+
+                <div class="plot-number">
+                    FIGURE ${String(index + 1).padStart(2, "0")}
+                </div>
+
+                <div class="notebook-plot-title">
+                    ${title}
+                </div>
+
+                <img
+                    src="${figure.src}"
+                    alt="${title}"
+                    loading="lazy"
+                >
+
+                <div class="plot-caption">
+                    ${caption}
+                    <br>
+                    Source: FlyRank ML Internship capstone notebook.
+                </div>
+
+            `;
+
+            gallery.appendChild(card);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.className = "error";
+
+        status.innerHTML = `
+            <strong>Notebook figures could not be loaded automatically.</strong>
+            <br>
+            Make sure <code>capstone.ipynb</code> is located beside
+            <code>index.html</code>.
+            <br><br>
+            If the page is being opened directly with
+            <code>file://</code>, run it through a local web server
+            or deploy it through GitHub Pages.
+        `;
+
+    }
+
+})();
+
+
+/* -------------------------------------------------------
+   Scroll reveal
+------------------------------------------------------- */
+
+const revealElements = document.querySelectorAll(
+    ".section, .principle, .method-step, .artifact, .plot-card"
+);
+
+const observer = new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+
+                observer.unobserve(entry.target);
+
+            }
+
+        });
+
+    },
+    {
+        threshold: 0.08
+    }
+);
+
+
+revealElements.forEach(element => {
+
+    element.style.opacity = "0";
+    element.style.transform = "translateY(18px)";
+    element.style.transition =
+        "opacity .7s ease, transform .7s ease";
+
+    observer.observe(element);
+
+});
+
+
+/* -------------------------------------------------------
+   Active navigation
+------------------------------------------------------- */
+
+const sections = document.querySelectorAll(
+    "section[id]"
+);
+
+const navigationLinks = document.querySelectorAll(
+    ".nav-links a"
+);
+
+const navObserver = new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if (!entry.isIntersecting) return;
+
+            navigationLinks.forEach(link => {
+
+                link.style.color = "";
+
+            });
+
+            const active = document.querySelector(
+                '.nav-links a[href="#' +
+                entry.target.id +
+                '"]'
+            );
+
+            if (active) {
+                active.style.color = "#173f35";
+            }
+
+        });
+
+    },
+    {
+        rootMargin: "-35% 0px -55% 0px"
+    }
+);
+
+
+sections.forEach(section => {
+    navObserver.observe(section);
+});
+
+</script>
 
 </body>
-
 </html>
